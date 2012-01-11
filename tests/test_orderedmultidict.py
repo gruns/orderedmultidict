@@ -228,8 +228,8 @@ class TestOmdict(unittest.TestCase):
       for key in omd.iterkeys():
         assert omd.setdefaultlist(key, _unique) == omd.getlist(key)
       for nonkey in self.nonkeys:
-        assert omd.setdefaultlist(nonkey) == []
-        assert omd.getlist(nonkey) == []
+        assert omd.setdefaultlist(nonkey) == [None]
+        assert omd.getlist(nonkey) == [None]
       omd.load(init)
       for nonkey in self.nonkeys:
         assert omd.setdefaultlist(nonkey, [1,2,3]) == [1,2,3]

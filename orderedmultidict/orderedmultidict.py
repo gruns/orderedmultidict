@@ -21,9 +21,9 @@ class omdict(object):
   """
   omdict: Ordered Multivalue Dictionary.
 
-  A multivalue dictionary is a dictionary that can store multiple values for the
-  same key. An ordered multivalue dictionary is a multivalue dictionary that
-  retains the order of insertions and deletions.
+  A multivalue dictionary is a dictionary that can store multiple values per
+  key. An ordered multivalue dictionary is a multivalue dictionary that retains
+  the order of insertions and deletions.
 
   Internally, items are stored in a doubly linked list, self._items. A
   dictionary, self._map, is also maintained and stores an ordered list of linked
@@ -192,7 +192,7 @@ class omdict(object):
     self.add(key, default)
     return default
 
-  def setdefaultlist(self, key, defaultlist=[]):
+  def setdefaultlist(self, key, defaultlist=[None]):
     """
     Similar to setdefault() except <defaultlist> is a list of values to set for
     <key>. If <key> already exists, its existing list of values is returned.
@@ -350,10 +350,15 @@ class omdict(object):
 
   def popitem(self, fromall=False, last=True):
     """
-    Pop and return a key:value item. If <fromall> is False, items()[0] is popped
-    if <last> is False or items()[-1] is popped if <last> is True. If <fromall>
-    is True, allitems()[0] is popped if <last> is False or allitems()[-1] is
-    popped if <last> is True.
+    Pop and return a key:value item.
+
+    If <fromall> is False, items()[0] is popped if <last> is False or
+    items()[-1] is popped if <last> is True. All remaining items with the same
+    key are removed.
+
+    If <fromall> is True, allitems()[0] is popped if <last> is False or
+    allitems()[-1] is popped if <last> is True. Any remaining items with the
+    same key remain.
 
     Example:
       omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
@@ -390,9 +395,9 @@ class omdict(object):
     """
     Pop and return a key:valuelist item comprised of a key and that key's list
     of values. If <last> is False, a key:valuelist item comprised of keys()[0]
-    and its associated list of values are popped and returned. If <last> is
-    True, a key:valuelist item comprised of keys()[-1] and its associated list
-    of values are popped and returned.
+    and its list of values is popped and returned. If <last> is True, a
+    key:valuelist item comprised of keys()[-1] and its list of values is popped
+    and returned.
 
     Example:
       omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
