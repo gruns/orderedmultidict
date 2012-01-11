@@ -442,7 +442,7 @@ __len(omd)__ returns the number of keys in the dictionary, identical to
 2
 ```
 
-__size()__ returns the total number of all items in the dictionary.
+__size()__ returns the total number of items in the dictionary.
 
 ```python
 >>> omd = omdict([(1, 1), (1, 11), (2, 2), (1, 111)])
