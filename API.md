@@ -463,7 +463,7 @@ omdict object for method chaining.
 ```
 
 __fromkeys(keys[, value])__ behaves identically to [dict.fromkeys(key\[,
-value\]](http://docs.python.org/library/stdtypes.html#dict.fromkeys).
+value\])](http://docs.python.org/library/stdtypes.html#dict.fromkeys).
 
 __has_key(key)__ behaves identically to
 [dict.has_key(key)](http://docs.python.org/library/stdtypes.html#dict.has_key). Use
