@@ -44,8 +44,8 @@ Method parity with dict() is retained. omdict() can be a drop-in replacement.
 
 ```python
 >>> d, omd = dict(), omdict()
->>> d.update([(1,1),(1,11),(2,2),(2,22)])
->>> omd.update([(1,1),(1,11),(2,2),(2,22)])
+>>> d.update([(1,1), (1,11), (2,2), (2,22)])
+>>> omd.update([(1,1), (1,11), (2,2), (2,22)])
 >>> d[3] = 3
 >>> omd[3] = 3
 >>> d[1], omd[1]
