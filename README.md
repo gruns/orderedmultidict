@@ -1,10 +1,10 @@
 # orderedmultidict
 
-### omdict is an Ordered Multivalue Dictionary that retains method parity with dict().
+### omdict is an ordered multivalue dictionary that retains method parity with dict.
 
-A multivalue dictionary is a dictionary that can store multiple values for the
-same key. An ordered multivalue dictionary is a multivalue dictionary that
-retains the order of insertions and deletions.
+A multivalue dictionary is a dictionary that can store multiple values per
+key. An ordered multivalue dictionary is a multivalue dictionary that retains
+the order of insertions and deletions.
 
 orderedmultidict is Unlicensed in the public domain, so you can build amazing
 things.
@@ -40,16 +40,16 @@ omdict retains insertion and deletion order.
 [(2, 'sup'), (1, 1)]
 ```
 
-Method parity with dict() is retained. omdict() can be a drop-in replacement.
+Method parity with dict is retained. omdict can be a drop-in replacement.
 
 ```python
 >>> d, omd = dict(), omdict()
 >>> d.update([(1,1), (1,11), (2,2), (2,22)])
 >>> omd.update([(1,1), (1,11), (2,2), (2,22)])
->>> d[3] = 3
->>> omd[3] = 3
 >>> d[1], omd[1]
 (11, 11)
+>>> d[3] = 3
+>>> omd[3] = 3
 >>> d.get(3), omd.get(3)
 (3, 3)
 >>> d.items() == omd.items()
@@ -59,8 +59,8 @@ True
 
 ### API
 
-See all of omdict's methods, with examples, in omdict's API document <a
-href="https://github.com/gruns/orderedmultidict/blob/master/API.md">API.md</a>.
+See all of omdict's methods, with examples, in omdict's API document,
+[API.md](https://github.com/gruns/orderedmultidict/blob/master/API.md).
 
 
 ### Installation
