@@ -54,12 +54,12 @@ items.
 __load(mapping)__ can be used at any time to reinitialize an omdict.
 
 ```python
->>> omd = omdict([(1,1), (2,2), (3,3)])
->>> omd.allitems()
-[(1, 1), (2, 2), (3, 3)]
 >>> omd.load({4:4, 5:5})
 >>> omd.allitems()
 [(4, 4), (5, 5)]
+>>> omd = omdict([(1,1), (2,2), (3,3)])
+>>> omd.allitems()
+[(1, 1), (2, 2), (3, 3)]
 >>> omd.load([(6,6), (6,6)])
 >>> omd.allitems()
 [(6, 6), (6, 6)]
