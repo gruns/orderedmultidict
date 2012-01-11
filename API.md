@@ -1,6 +1,6 @@
 # omdict API
 
-## Nomenclature
+### Nomenclature
 
 Many of omdict's methods contain the word __list__ or __all__. __list__ in a
 method name indicates that method interacts with a list of values instead of a
@@ -28,16 +28,16 @@ So __list__ denotes a list of values, and __all__ denotes all items.
 Simple.
 
 
-## Method parity with dict
+### Method parity with dict
 
-All dict methods behave identically on omdict objects. These dict methods are
-documented in Python's standard library documentation, found
-[here](http://docs.python.org/library/stdtypes.html#dict).
+All [dict](http://docs.python.org/library/stdtypes.html#dict) methods behave
+identically on omdict objects.
 
 
-## Initialization and Updates
+### Initialization and Updates
 
-omdict objects can be initialized from a dictionary or a list of items.
+omdict objects can be initialized from a dictionary or a list of key:value
+items.
 
 ```python
 >>> omd = omdict()
@@ -85,7 +85,7 @@ __mapping__ before any new items are added.
 ```
 
 
-## Getters, Setters, and Adders
+### Getters, Setters, and Adders
 
 __omd[key]__ behaves identically to
 [dict\[key\]](http://docs.python.org/library/stdtypes.html#dict). If __key__ has
@@ -227,7 +227,7 @@ values for __key__. Returns the omdict object for method chaining.
 ```
 
 
-## Groups and Group Iteration
+### Groups and Group Iteration
 
 __items([key])__ behaves identically to
 [dict.items()](http://docs.python.org/library/stdtypes.html#dict.items) except
@@ -311,7 +311,7 @@ __iterallvalues()__ returns an iterator over allvalues().
 ```
 
 
-## Pops
+### Pops
 
 __pop(key[, default])__ behaves identically to [dict.pop(key\[,
 default\])](http://docs.python.org/library/stdtypes.html#dict.pop). If __key__
@@ -411,7 +411,7 @@ is empty or if __key__ is provided and not in the dictionary.
 ```
 
 
-## Miscellaneous
+### Miscellaneous
 
 __copy()__ returns a shallow copy of the dictionary.
 
