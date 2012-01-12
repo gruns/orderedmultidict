@@ -281,8 +281,8 @@ returns an iterator over listitems().
 ```
 
 __allitems([key])__ returns a list of every item in the dictionary, including
-multiple items with the same key. Only items with key __key__ are returned if
-__key__ is provided and in the dictionary. KeyError is raised if __key__ is
+multiple items with the same key. If __key__ is provided and in the dictionary,
+only items with key __key__ are returned . KeyError is raised if __key__ is
 provided and not in the dictionary. __iterallitems([key])__ returns an iterator
 over allitems(key).
 
@@ -370,8 +370,8 @@ items()[-1] is popped if __last__ is True. All remaining items with the same key
 are removed.
 
 If __fromall__ is True, allitems()[0] is popped if __last__ is False or
-allitems()[-1] is popped if __last__ is True. Any remaining items with the same
-key remain.
+allitems()[-1] is popped if __last__ is True. No other remaining items are
+removed, even if they have the same key.
 
 ```python
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])

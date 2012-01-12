@@ -6,8 +6,8 @@ A multivalue dictionary is a dictionary that can store multiple values per
 key. An ordered multivalue dictionary is a multivalue dictionary that retains
 the order of insertions and deletions.
 
-orderedmultidict is Unlicensed in the public domain, so you can build amazing
-things.
+orderedmultidict is [Unlicensed](http://unlicense.org/) in the public domain so
+you can build amazing things.
 
 omdict can store multiple values per key.
 
