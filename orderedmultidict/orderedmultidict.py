@@ -602,11 +602,19 @@ class omdict(object):
     return self
 
   def __eq__(self, other):
-    myitems, otheritems = self.iterallitems(), other.iterallitems()
-    for item1, item2 in izip_longest(myitems, otheritems, fillvalue=_absent):
-      if item1 != item2 or item1 is _absent or item2 is _absent:
+    if hasattr(other, 'iterallitems') and callable(other.iterallitems):
+      myiter, otheriter = self.iterallitems(), other.iterallitems()
+      for item1, item2 in izip_longest(myiter, otheriter, fillvalue=_absent):
+        if item1 != item2 or item1 is _absent or item2 is _absent:
+          return False
+    # Ignore order so we can compare ordered omdicts with unordered dicts.
+    else:
+      if len(self) != len(other):
         return False
-    return True
+      for key, value in other.iteritems():
+        if self.get(key, _absent) != value:
+          return False
+    return True      
 
   def __ne__(self, other):
     return not self.__eq__(other)

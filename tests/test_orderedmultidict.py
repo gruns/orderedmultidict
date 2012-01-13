@@ -471,8 +471,10 @@ class TestOmdict(unittest.TestCase):
 
   def test_eq(self):
     for init in self.inits:
-      omd = omdict(init)
-      assert omd == omd and omd == omd.copy()
+      d, omd = dict(init), omdict(init)
+      print d, d.items()
+      print omd, omd.items()
+      assert d == omd and omd == omd and omd == omd.copy()
 
   def test_ne(self):
     diff = omdict([(_unique, _unique)])
@@ -719,5 +721,4 @@ def _rremove(lst, item):
   if pos >= 0:
     lst.pop(pos)
     return lst
-  else:
-    raise ValueError('_rremove(list, x): x not in list')
+  raise ValueError('_rremove(list, x): x not in list')
