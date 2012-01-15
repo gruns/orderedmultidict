@@ -32,13 +32,13 @@ _unique = object()
 #  for dic in dicts:
 #    dic.items() == ...
 #
-# list and dictionary looping bodies can be merged with iterlist
+# list and dictionary looping bodies can be merged with itemlist
 #
-#  iterlist = [iterlist([(1,1),(2,2)]), {1:1,2:2}]
-#  for ilist in iterlist:
+#  itemlist = [itemlist([(1,1),(2,2)]), {1:1,2:2}]
+#  for ilist in itemlist:
 #    ilist.items() == ...
 #
-class iterlist(list):
+class itemlist(list):
   def items(self):
     return self
   def iteritems(self):
@@ -47,26 +47,24 @@ class iterlist(list):
 
 class TestOmdict(unittest.TestCase):
   def setUp(self):
-    il = iterlist
-
     self.inits = [
-      {}, {1:1}, {1:1,2:2,3:3}, {None:None}, {None:None,1:1,2:2},
-      {False:False},
-      
-      il([]), il([(1,1)]), il([(1,1),(2,2)]), il([(1,1),(2,2),(1,1)]),
-      il([(1,1),(1,1),(1,1)]), il([(None,None),(None,None)]),
-      il([(False,False)]),
-      il([(None,1),(1,None),(None,None),(None,1),(1,None)]),
+      {}, {1:1}, {1:1,2:2,3:3}, {None:None}, {None:None,1:1,2:2}, {False:False},
       ]
+    self.inits += map(itemlist, [
+      [], [(1,1)], [(1,1),(2,2)], [(1,1),(2,2),(1,1)],
+      [(1,1),(1,1),(1,1)], [(None,None),(None,None)],
+      [(False,False)],
+      [(None,1),(1,None),(None,None),(None,1),(1,None)],
+      ])
 
     # Updates to test update() and updateall().
-    self.updates = [
-      {}, {7:7}, {7:7,8:8,9:9}, {None:None}, {1:1,2:2},
+    self.updates = [{}, {7:7}, {7:7,8:8,9:9}, {None:None}, {1:1,2:2}]
+    self.updates += map(itemlist, [
+      [], [(7,7)], [(7,7),(8,8),(9,9)], [(None,'none')],
+      [(9,9),(1,2)], [(7,7),(7,7),(8,8),(7,77)],
+      [(1,11),(1,111),(1,1111),(2,22),(2,222),('a','a'),('a','aa')],
+      ])
 
-      il([]), il([(7,7)]), il([(7,7),(8,8),(9,9)]), il([(None,'none')]),
-      il([(9,9),(1,2)]), il([(7,7),(7,7),(8,8),(7,77)]),
-      il([(1,11),(1,111),(1,1111),(2,22),(2,222),('a','a'),('a','aa')]),
-      ]
     self.keyword_updates = [
       {}, {'1':1}, {'1':1,'2':2}, {'sup':'pumps','scewps':None},
       ]
