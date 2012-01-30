@@ -22,7 +22,7 @@ if sys.version_info[:2] <= (2,6):
   required.append('ordereddict')
 
 setup(name='orderedmultidict',
-      version='0.6',
+      version='0.6.5',
       author='Arthur Grunseid',
       author_email='grunseid@gmail.com',
       url='https://github.com/gruns/orderedmultidict',
