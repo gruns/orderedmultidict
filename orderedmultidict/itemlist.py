@@ -96,7 +96,7 @@ class itemlist(object):
     while current and current is not self.root:
       # Record current.next here in case current.next changes after the yield
       # and before we return for the next iteration. For example, methods like
-      # reverse() will change current.next() yield returns.
+      # reverse() will change current.next() before yield gets executed again.
       nextnode = current.next 
       yield current, current.key, current.value
       current = nextnode
