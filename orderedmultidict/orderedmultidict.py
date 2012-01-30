@@ -626,10 +626,8 @@ class omdict(object):
     for key in self.iterkeys():
       yield key
 
-  def __contains__(self, item):
-    if hasattr(item, '__len__') and callable(item.__len__) and len(item) == 2:
-      return item in self._items
-    return item in self._map
+  def __contains__(self, key):
+    return key in self._map
 
   def __getitem__(self, key):
     if key in self:

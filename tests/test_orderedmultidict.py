@@ -66,7 +66,7 @@ class TestOmdict(unittest.TestCase):
       ])
 
     self.keyword_updates = [
-      {}, {'1':1}, {'1':1,'2':2}, {'sup':'pumps','scewps':None},
+      {}, {'1':1}, {'1':1,'2':2}, {'sup':'pumps','scewps':None}, {'aa':'aa'},
       ]
 
     # Items not initially in any of the multidict inputs self.inits.
@@ -145,10 +145,10 @@ class TestOmdict(unittest.TestCase):
 
         # Verification.
         if update or keyword_update:
-          for item in reduced:
-            assert item in omd1 and item in omd3
-          for item in keyword_update.items():
-            assert item in omd2 and item in omd3
+          for key, value in reduced:
+            assert key in omd1 and key in omd3
+          for key, value in keyword_update.items():
+            assert key in omd2 and key in omd3
         else:
           assert omd1 == omd2 == omd3 == oldomd
 
@@ -497,7 +497,7 @@ class TestOmdict(unittest.TestCase):
     for init in self.inits:
       omd = omdict(init)
       for key, value in init.items():
-        assert key in omd and (key, value) in omd
+        assert key in omd
 
   def test_getitem(self):
     for init in self.inits:
