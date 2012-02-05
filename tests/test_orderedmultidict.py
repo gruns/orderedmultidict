@@ -232,6 +232,19 @@ class TestOmdict(unittest.TestCase):
       for nonkey in self.nonkeys:
         assert omd.setdefaultlist(nonkey, [1,2,3]) == [1,2,3]
         assert omd.getlist(nonkey) == [1,2,3]
+
+    # setdefaultlist() with an empty list of values does nothing.
+    for init in self.inits:
+      omd = omdict(init)
+      for key in omd.iterkeys():
+        values = omd.getlist(key)
+        assert key in omd
+        assert omd.setdefaultlist(key, []) == values
+        assert key in omd and omd.getlist(key) == values
+      for nonkey in self.nonkeys:
+        assert nonkey not in omd
+        assert omd.setdefaultlist(nonkey, []) == []
+        assert nonkey not in omd
         
   def test_add(self):
     for init in self.inits:
@@ -302,6 +315,19 @@ class TestOmdict(unittest.TestCase):
         assert omd.setlist(key, self.valuelist)
         assert key in omd and omd.getlist(key) == self.valuelist
 
+    # Setting a key to an empty list is equivalent deleting that key.
+    for init in self.inits:
+      omd = omdict(init)
+      for nonkey in self.nonkeys:
+        assert nonkey not in omd
+        omd.setlist(nonkey, [])
+        assert nonkey not in omd
+      for key in omd.iterkeys():
+        assert key in omd
+        omd.setlist(key, [])
+        assert key not in omd
+      assert not omd
+
   def test_pop(self):
     self._test_pop_poplist(lambda omd, key: omd.get(key) == omd.pop(key))
     
@@ -326,12 +352,13 @@ class TestOmdict(unittest.TestCase):
         assert omd.poplist(nonkey, _unique) == _unique
 
   def test_popvalue(self):
+    # popvalue() with no value provided.
     for init in self.inits:
-      for last in [True,False]:
+      for last in [True, False]:
         omd = omdict(init)
         allitems = omd.allitems()
         while omd.keys():
-          for key in list(omd.keys()):
+          for key in omd.keys():
             if last:
               value = omd.getlist(key)[-1]
               _rremove(allitems, (key, value))
@@ -345,7 +372,42 @@ class TestOmdict(unittest.TestCase):
       omd.load(init)
       for nonkey in self.nonkeys:
         self.assertRaises(KeyError, omd.popvalue, nonkey)
-        assert omd.popvalue(nonkey, _unique) == _unique
+        assert omd.popvalue(nonkey, default=_unique) == _unique
+
+    # popvalue() with value provided.
+    #   last = True (default).
+    omd = omdict([(1,1), (2,2), (3,3), (2,2), (3,3), (2,2)])
+    assert omd.popvalue(2, 2) == 2
+    print omd.allitems()
+    print [(1,1), (2,2), (3,3), (2,2), (3,3)]
+    assert omd.allitems() == [(1,1), (2,2), (3,3), (2,2), (3,3)]
+    assert omd.popvalue(2, 2) == 2
+    assert omd.allitems() == [(1,1), (2,2), (3,3), (3,3)]
+    assert omd.popvalue(2, 2) == 2
+    assert omd.allitems() == [(1,1), (3,3), (3,3)]
+    #   last = False.
+    omd = omdict([(3,3), (2,2), (3,3), (2,2), (3,3), (2,2)])
+    assert omd.popvalue(2, 2, last=True) == 2
+    assert omd.allitems() == [(3,3), (2,2), (3,3), (2,2), (3,3)]
+    assert omd.popvalue(2, 2, last=True) == 2
+    assert omd.allitems() == [(3,3), (2,2), (3,3), (3,3)]
+    assert omd.popvalue(2, 2, last=True) == 2
+    assert omd.allitems() == [(3,3), (3,3), (3,3)]
+
+    # Invalid key.
+    self.assertRaises(KeyError, omd.popvalue, _unique, _unique)
+    self.assertRaises(KeyError, omd.popvalue, _unique, 2)
+    self.assertRaises(KeyError, omd.popvalue, _unique, 22)
+    self.assertRaises(KeyError, omd.popvalue, _unique, _unique, last=False)
+    self.assertRaises(KeyError, omd.popvalue, _unique, 2)
+    self.assertRaises(KeyError, omd.popvalue, _unique, 22)
+    assert omd.popvalue(_unique, _unique, 'sup') == 'sup'
+    assert omd.popvalue(_unique, 2, 'sup') == 'sup'
+    assert omd.popvalue(_unique, 22, 'sup') == 'sup'
+
+    # Valid key, invalid value.
+    self.assertRaises(ValueError, omd.popvalue, 3, _unique)
+    self.assertRaises(ValueError, omd.popvalue, 3, _unique, False)
 
   def test_popitem(self):
     for init in self.inits:
@@ -384,7 +446,7 @@ class TestOmdict(unittest.TestCase):
           assert key == omdcopy.keys()[-1 if last else 0]
           assert valuelist == omdcopy.getlist(key)
           omdcopy.pop(omdcopy.keys()[-1 if last else 0])
-
+          
         # poplistitem() on an empty omdict.
         self.assertRaises(KeyError, omd.poplistitem)
 
@@ -470,8 +532,6 @@ class TestOmdict(unittest.TestCase):
   def test_eq(self):
     for init in self.inits:
       d, omd = dict(init), omdict(init)
-      print d, d.items()
-      print omd, omd.items()
       assert d == omd and omd == omd and omd == omd.copy()
 
   def test_ne(self):
@@ -661,7 +721,7 @@ class TestOmdict(unittest.TestCase):
     assert omd.popvalue(1) == 3
     assert omd.allitems() == [(1,1),(2,2),(1,1),(1,2)]
     self.assertRaises(KeyError, omd.popvalue, _unique)
-    assert omd.popvalue(_unique, 'sup') == 'sup'
+    assert omd.popvalue(_unique, default='sup') == 'sup'
     assert omd.popvalue(1, last=False) == 1
     assert omd.allitems() == [(2,2),(1,1),(1,2)]
 

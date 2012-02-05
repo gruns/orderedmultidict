@@ -11,11 +11,54 @@ try:
   from collections import OrderedDict as odict
 except ImportError:
   from ordereddict import OrderedDict as odict
-from itertools import imap, izip, izip_longest, repeat
+from itertools import imap, izip, izip_longest, repeat, chain
 
 from itemlist import itemlist
 
 _absent = object() # Marker that means no parameter was provided.
+
+#
+# TODO(grun): Create a subclass of list that values(), getlist(), allitems(),
+# etc return that the user can manipulate directly to control the omdict()
+# object.
+#
+# For example, users should be able to do things like
+#
+#   omd = omdict([(1,1), (1,11)])
+#   omd.values(1).append('sup')
+#   omd.allitems() == [(1,1), (1,11), (1,'sup')]
+#   omd.values(1).remove(11)
+#   omd.allitems() == [(1,1), (1,'sup')]
+#   omd.values(1).extend(['two', 'more'])
+#   omd.allitems() == [(1,1), (1,'sup'), (1,'two'), (1,'more')]
+#
+# or
+#
+#   omd = omdict([(1,1), (1,11)])
+#   omd.allitems().extend([(2,2), (2,22)])
+#   omd.allitems() == [(1,1), (1,11), (2,2), (2,22)])
+#
+# or
+#
+#   omd = omdict()
+#   omd.values(1) = [1, 11]
+#   omd.allitems() == [(1,1), (1,11)]
+#   omd.values(1) = map(lambda i: i * -10, omd.values(1))
+#   omd.allitems() == [(1,-10), (1,-110)]
+#   omd.allitems() = filter(lambda (k,v): v > -100, omd.allitems())
+#   omd.allitems() == [(1,-10)]
+#
+# etc.
+#
+# To accomplish this, subclass list in such a manner that each list element is
+# really a two tuple, where the first tuple value is the actual value and the
+# second tuple value is a reference to the itemlist node for that value. Users
+# only interact with the first tuple values, the actual values, but behind the
+# scenes when an element is modified, deleted, inserted, etc, the according
+# itemlist nodes are modified, deleted, inserted, etc accordingly. In this
+# manner, users can manipulate omdict objects directly through direct list
+# manipulation.
+#
 
 class omdict(object):
   """
@@ -87,7 +130,7 @@ class omdict(object):
       omd.load([(4,4), (4,44), (5,5)])
       omd.allitems() == [(4,4), (4,44), (5,5)]
 
-    Returns: self.
+    Returns: <self>.
     """
     self.clear()
     self.updateall(mapping)
@@ -130,47 +173,58 @@ class omdict(object):
       omd.updateall([(2,'two'), (1,'one'), (2,222), (1,111)])
       omd.allitems() == [(1, 'one'), (2, 'two'), (2, 222), (1, 111)]
 
-    Returns: self.
+    Returns: <self>.
     """
     self._update_updateall(False, *args, **kwargs)
     return self
 
   def _update_updateall(self, replace_at_most_one, *args, **kwargs):
-    leftovers = []
-    newvalues = dict()
-    def process_items(iterator):
-      for key, value in iterator:
-        # If there are existing items with key <key> that have yet to be marked
-        # for replacement, mark that item's value to be replaced by <value> by
-        # appending it to <newvalues>.
-        if key in self and key not in newvalues:
-          newvalues[key] = [value]
-        elif (key in self and not replace_at_most_one and
-              len(newvalues[key]) < len(self.values(key))):
-          newvalues[key].append(value)
-        else:
-          if replace_at_most_one:
-            newvalues[key] = [value]
-          else:
-            leftovers.append((key, value))
-
-    # Process <args>.
-    for mapping in args:
-      iterator = mapping
-      if hasattr(mapping, 'iterallitems') and callable(mapping.iterallitems):
-        iterator = mapping.iterallitems()
-      elif hasattr(mapping, 'iteritems') and callable(mapping.iteritems):
-        iterator = mapping.iteritems()
-      process_items(iterator)
-    # Process <kwargs>.
-    process_items(kwargs.iteritems())
-
+    # Bin the items in <args> and <kwargs> into <replacements> or
+    # <leftovers>. Items in <replacements. are new values to replace old values
+    # for a given key, and items in <leftovers> are new items to be added.
+    replacements, leftovers = dict(), []
+    for mapping in chain(args, [kwargs]):
+      self._bin_update_items(self._items_iterator(mapping), replace_at_most_one,
+                             replacements, leftovers)
+    
     # First, replace existing values for each key.
-    for key, values in newvalues.iteritems():
+    for key, values in replacements.iteritems():
       self.setlist(key, values)
     # Then, add the leftover items to the end of the list of all items.
     for key, value in leftovers:
       self.add(key, value)
+
+  def _bin_update_items(self, items, replace_at_most_one,
+                            replacements, leftovers):
+    """
+    <replacements and <leftovers> are modified directly, ala pass by reference.
+    """
+    for key, value in items:
+      # If there are existing items with key <key> that have yet to be marked
+      # for replacement, mark that item's value to be replaced by <value> by
+      # appending it to <replacements>.
+      if key in self and key not in replacements:
+        replacements[key] = [value]
+      elif (key in self and not replace_at_most_one and
+            len(replacements[key]) < len(self.values(key))):
+        replacements[key].append(value)
+      else:
+        if replace_at_most_one:
+          replacements[key] = [value]
+        else:
+          leftovers.append((key, value))
+
+  def _items_iterator(self, container):
+    iterator = iter(container)
+    if hasattr(container, 'iterallitems') and callable(container.iterallitems):
+      iterator = container.iterallitems()
+    elif hasattr(container, 'allitems') and callable(container.allitems):
+      iterator = iter(container.allitems())
+    elif hasattr(container, 'iteritems') and callable(container.iteritems):
+      iterator = container.iteritems()
+    elif hasattr(container, 'items') and callable(container.items):
+      iterator = iter(container.items())
+    return iterator
 
   def get(self, key, default=None):
     if key in self:
@@ -197,6 +251,9 @@ class omdict(object):
     Similar to setdefault() except <defaultlist> is a list of values to set for
     <key>. If <key> already exists, its existing list of values is returned.
 
+    If <key> isn't a key and <defaultlist> is an empty list, [], no values are
+    added for <key> and <key> will not be added as a key.
+
     Returns: List of <key>'s values if <key> exists in the dictionary, otherwise
     <default>.
     """
@@ -216,7 +273,7 @@ class omdict(object):
       omd.add(1, 11) # omd.allitems() == [(1,1), (1,11)]
       omd.add(2, 2)  # omd.allitems() == [(1,1), (1,11), (2,2)]
 
-    Returns: self.
+    Returns: <self>.
     """    
     self._map.setdefault(key, [])
     node = self._items.append(key, value)
@@ -236,7 +293,7 @@ class omdict(object):
       omd.addlist(2, [2])
       omd.allitems() == [(1, 1), (1, 11), (1, 111), (2, 2)]
 
-    Returns: self.
+    Returns: <self>.
     """    
     for value in valuelist:
       self.add(key, value)
@@ -246,12 +303,12 @@ class omdict(object):
     """
     Sets <key>'s value to <value>. Identical in function to __setitem__().
 
-    Returns: self.
+    Returns: <self>.
     """
     self[key] = value
     return self
 
-  def setlist(self, key, values=[]):
+  def setlist(self, key, values):
     """
     Sets <key>'s list of values to <values>. Existing items with key <key> are
     first replaced with new values from <values>. Any remaining old items that
@@ -259,26 +316,36 @@ class omdict(object):
     <values> that don't have corresponding items with <key> to replace are
     appended to the end of the list of all items.
 
+    If values is an empty list, [], <key> is deleted, equivalent in action to
+    del self[<key>].
+
     Example:
       omd = omdict([(1,1), (2,2)])
       omd.setlist(1, [11, 111])
       omd.allitems() == [(1,11), (2,2), (1,111)]
 
-      omd = omdict([(1,1), (1,11), (1,111)])
+      omd = omdict([(1,1), (1,11), (2,2), (1,111)])
       omd.setlist(1, [None])
       omd.allitems() == [(1,None), (2,2)]
 
-    Returns: self.
+      omd = omdict([(1,1), (1,11), (2,2), (1,111)])
+      omd.setlist(1, [])
+      omd.allitems() == [(2,2)]
+
+    Returns: <self>.
     """
-    it = izip_longest(list(self._map.get(key, [])), values, fillvalue=_absent)
-    for node, value in it:
-      if node is not _absent and value is not _absent:
-        node.value = value
-      elif node is _absent:
-        self.add(key, value)
-      elif value is _absent:
-        self._map[key].remove(node)
-        self._items.removenode(node)
+    if not values and key in self:
+      self.pop(key)
+    else:
+      it = izip_longest(list(self._map.get(key, [])), values, fillvalue=_absent)
+      for node, value in it:
+        if node is not _absent and value is not _absent:
+          node.value = value
+        elif node is _absent:
+          self.add(key, value)
+        elif value is _absent:
+          self._map[key].remove(node)
+          self._items.removenode(node)
     return self
 
   def pop(self, key, default=_absent):
@@ -316,34 +383,60 @@ class omdict(object):
       return default
     raise KeyError(key)
 
-  def popvalue(self, key, default=_absent, last=True):
+  def popvalue(self, key, value=_absent, default=_absent, last=True):
     """
-    Pops the first or last value for <key> if <key> is in the dictionary. If
-    <key> no longer has any values after a popvalue() call, <key> is removed
+    If <value> is provided, pops the first or last (key,value) item in the
+    dictionary if <key> is in the dictionary.
+
+    If <value> is not provided, pops the first or last value for <key> if <key>
+    is in the dictionary.
+
+    If <key> no longer has any values after a popvalue() call, <key> is removed
     from the dictionary. If <key> isn't in the dictionary and <default> was
     provided, return default. KeyError is raised if <default> is not provided
-    and <key> is not in the dictionary.
+    and <key> is not in the dictionary. ValueError is raised if <value> is
+    provided and a value for <key>
 
     Example:
-      omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
+      omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3), (2,22)])
       omd.popvalue(1, last=True) == 111
-      omd.allitems == [(1,1), (1,11), (2,2), (3,3)]
+      omd.allitems == [(1,1), (1,11), (2,2), (3,3), (2,22)]
       omd.popvalue(1) == 1
-      omd.allitems() == [(1,11), (2,2), (3,3)]
+      omd.allitems() == [(1,11), (2,2), (3,3), (2,22)]
+      omd.popvalue(2, 2)
+      omd.allitems() == [(1,11), (3,3), (2,22)]
+      omd.popvalue(1, 11)
+      omd.allitems() == [(3,3), (2,22)]
 
     Params:
       last: Boolean whether to return <key>'s first value (<last> is False) or
         last value (<last> is True).
-    Raises: KeyError if <key> isn't in the dictionary and <default> isn't
-      provided.
+    Raises:
+      KeyError if <key> isn't in the dictionary and <default> isn't
+        provided.
+      ValueError if <value> isn't a value for <key>.
     Returns: The first or last of <key>'s values.
     """
-    if key in self:
-      node = self._map[key].pop(-1 if last else 0)
+    def pop_node_with_index(key, index):
+      node = self._map[key].pop(index)
       if not self._map[key]:
         del self._map[key]
       self._items.removenode(node)
-      return node.value
+      return node
+    
+    if key in self:
+      if value is not _absent:
+        if last:
+          pos = self.values(key)[::-1].index(value)
+        else:
+          pos = self.values(key).index(value)
+        if pos == -1:
+          raise ValueError(value)
+        else:
+          index = (len(self.values(key)) - 1 - pos) if last else pos
+          return pop_node_with_index(key, index).value
+      else:
+        return pop_node_with_index(key, -1 if last else 0).value
     elif key not in self._map and default is not _absent:
       return default
     raise KeyError(key)
@@ -435,7 +528,7 @@ class omdict(object):
       dictionary key, only values of items with key <key> are returned.
     """
     if key is not _absent and key in self._map:
-      return list(self.getlist(key))
+      return self.getlist(key)
     return list(self.itervalues())
 
   def lists(self):
@@ -594,7 +687,7 @@ class omdict(object):
       omd.reverse()
       omd.allitems() == [(3,3), (2,2), (1,111), (1,11), (1,1)]
 
-    Returns: self.
+    Returns: <self>.
     """
     for key in self._map.iterkeys():
       self._map[key].reverse()
