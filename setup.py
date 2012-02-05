@@ -3,6 +3,8 @@ import sys
 
 from setuptools import setup, find_packages
 
+import orderedmultidict.__info__ as pkginfo
+
 if sys.argv[-1] == 'publish':
   os.system('python setup.py sdist upload')
   sys.exit()
@@ -21,13 +23,13 @@ required = []
 if sys.version_info[:2] <= (2,6):
   required.append('ordereddict')
 
-setup(name='orderedmultidict',
-      version='0.6.5',
-      author='Arthur Grunseid',
-      author_email='grunseid@gmail.com',
-      url='https://github.com/gruns/orderedmultidict',
+setup(name=pkginfo.__title__,
+      version=pkginfo.__version__,
+      author=pkginfo.__author__,
+      author_email=pkginfo.__contact__,
+      url=pkginfo.__url__,
       packages=find_packages(),
-      license='Unlicense',
+      license=pkginfo.__license__,
       include_package_data=True,
       description='OrderedMultiDict: Ordered Multivalue Dictionary',
       long_description=long_description,
