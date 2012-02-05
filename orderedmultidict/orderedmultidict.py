@@ -59,6 +59,18 @@ _absent = object() # Marker that means no parameter was provided.
 # manner, users can manipulate omdict objects directly through direct list
 # manipulation.
 #
+# Once accomplished, some methods become redundant and should be removed in
+# favor of the more intuitive direct value list manipulation. Such redundant
+# methods include getlist() (removed in favor of values()?), addlist(), and
+# setlist().
+#
+# With the removal of many of the 'list' methods, think about renaming all
+# remaining 'list' methods to 'values' methods, like poplist() -> popvalues(),
+# poplistitem() -> popvaluesitem(), etc. This would be an easy switch for most
+# methods, but wouldn't fit others so well. For example, iterlists() would
+# become itervalues(), a name extremely similar to iterallvalues() but quite
+# different in function.
+#
 
 class omdict(object):
   """
@@ -395,18 +407,19 @@ class omdict(object):
     from the dictionary. If <key> isn't in the dictionary and <default> was
     provided, return default. KeyError is raised if <default> is not provided
     and <key> is not in the dictionary. ValueError is raised if <value> is
-    provided and a value for <key>
+    provided but isn't a value for <key>.
 
     Example:
       omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3), (2,22)])
-      omd.popvalue(1, last=True) == 111
-      omd.allitems == [(1,1), (1,11), (2,2), (3,3), (2,22)]
-      omd.popvalue(1) == 1
+      omd.popvalue(1) == 111
+      omd.allitems() == [(1,11), (1,111), (2,2), (3,3), (2,22)]
+      omd.popvalue(1, last=False) == 1
       omd.allitems() == [(1,11), (2,2), (3,3), (2,22)]
-      omd.popvalue(2, 2)
+      omd.popvalue(2, 2) == 2
       omd.allitems() == [(1,11), (3,3), (2,22)]
-      omd.popvalue(1, 11)
+      omd.popvalue(1, 11) == 11
       omd.allitems() == [(3,3), (2,22)]
+      omd.popvalue('not a key', default='sup') == 'sup'      
 
     Params:
       last: Boolean whether to return <key>'s first value (<last> is False) or

@@ -345,22 +345,40 @@ __key__ isn't in the dictionary.
 'sup'
 ```
 
-__popvalue(key[, default], last=True)__ pops the first or last value for
-__key__. If __key__ no longer has any values after a popvalue() call, __key__ is
-removed from the dictionary. __default__ is returned if provided and __key__
-isn't in the dictionary. KeyError is raised if __default__ isn't provided and
-__key__ isn't in the dictionary.
+__popvalue(key[, value, default], last=True)__ pops a value for __key__.
+
+If __value__ is not provided, the first or last value for __key__ is popped and
+returned.
+
+If __value__ is provided, the first or last (__key__,__value__) item is popped
+and __value__ is returned.
+
+If __key__ no longer has any values after a popvalue() call, __key__ is removed
+from the dictionary. __default__ is returned if provided and __key__ isn't in
+the dictionary. KeyError is raised if __default__ isn't provided and __key__
+isn't in the dictionary. ValueError is raised if <value> is provided but isn't a
+value for <key>.
 
 ```python
->>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
->>> omd.popvalue(1, last=False)
-1
->>> omd.allitems()
-[(1, 11), (1, 111), (2, 2), (3, 3)]
+>>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3), (2,22)])
 >>> omd.popvalue(1)
 111
 >>> omd.allitems()
-[(1, 11), (2, 2), (3, 3)]
+[(1, 1), (1, 11), (2, 2), (3, 3), (2, 22)]
+>>> omd.popvalue(1, last=False)
+1
+>>> omd.allitems()
+[(1, 11), (2, 2), (3, 3), (2, 22)]
+>>> omd.popvalue(2, 2)
+2
+>>> omd.allitems()
+[(1, 11), (3, 3), (2, 22)]
+>>> omd.popvalue(1, 11)
+11
+>>> omd.allitems()
+[(3, 3), (2, 22)]
+>>> omd.popvalue('not a key', default='sup')
+'sup'
 ```
 
 __popitem(fromall=False, last=True)__ pops and returns a key:value item.
