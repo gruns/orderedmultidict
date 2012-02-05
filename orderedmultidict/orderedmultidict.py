@@ -752,3 +752,6 @@ class omdict(object):
   def __str__(self):
     return '{%s}' % ', '.join(map(lambda p: '%r: %r'%(p[0], p[1]),
                                   self.iterallitems()))
+
+  def __repr__(self):
+    return '%s(%s)' % (self.__class__.__name__, self.allitems())
