@@ -7,6 +7,6 @@
 #
 # License: Build Amazing Things (Unlicense)
 
-from .__init__ import *
+from __info__ import *
 
 from .orderedmultidict import *
