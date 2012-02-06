@@ -378,8 +378,6 @@ class TestOmdict(unittest.TestCase):
     #   last = True (default).
     omd = omdict([(1,1), (2,2), (3,3), (2,2), (3,3), (2,2)])
     assert omd.popvalue(2, 2) == 2
-    print omd.allitems()
-    print [(1,1), (2,2), (3,3), (2,2), (3,3)]
     assert omd.allitems() == [(1,1), (2,2), (3,3), (2,2), (3,3)]
     assert omd.popvalue(2, 2) == 2
     assert omd.allitems() == [(1,1), (2,2), (3,3), (3,3)]
