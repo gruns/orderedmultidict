@@ -15,7 +15,7 @@ retains the order of insertions and deletions.
 
 omdict retains method parity with dict.
 
-Information and documentation at: https://github.com/gruns/orderedmultidict''')
+Information and documentation at https://github.com/gruns/orderedmultidict.''')
 
 required = []
 if sys.version_info[:2] <= (2,6):
