@@ -7,8 +7,7 @@ if sys.argv[-1] == 'publish':
   os.system('python setup.py sdist upload')
   sys.exit()
 
-long_description = ('''omdict: Ordered Multivalue Dictionary.
-
+long_description = ('''
 A multivalue dictionary is a dictionary that can store multiple values for the
 same key. An ordered multivalue dictionary is a multivalue dictionary that
 retains the order of insertions and deletions.
@@ -27,7 +26,7 @@ setup(name='orderedmultidict',
       author_email='grunseid@gmail.com',
       url='https://github.com/gruns/orderedmultidict',
       license='Unlicense',
-      description='OrderedMultiDict: Ordered Multivalue Dictionary',
+      description='Ordered Multivalue Dictionary - omdict.',
       long_description=long_description,
       packages=find_packages(),
       include_package_data=True,
