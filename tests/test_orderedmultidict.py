@@ -126,7 +126,7 @@ class TestOmdict(unittest.TestCase):
     omd = omdict([(1,1),(1,11),(2,2),(3,3),(1,111),(2,22)])
     omd.update({1:None,2:None,3:None})
     assert omd.allitems() == [(1,None),(2,None),(3,None)]
-    
+
     for init in self.inits:
       for update, keyword_update in izip(self.updates, self.keyword_updates):
         omd1, omd2, omd3 = omdict(init), omdict(init), omdict(init)
@@ -206,7 +206,7 @@ class TestOmdict(unittest.TestCase):
       for nonkey in self.nonkeys:
         assert omd.getlist(nonkey) == []
         assert omd.getlist(nonkey, _unique) == _unique
-      
+
   def test_setdefault(self):
     for init in self.inits:
       omd = omdict(init)
@@ -245,7 +245,7 @@ class TestOmdict(unittest.TestCase):
         assert nonkey not in omd
         assert omd.setdefaultlist(nonkey, []) == []
         assert nonkey not in omd
-        
+
   def test_add(self):
     for init in self.inits:
       omd = omdict(init)
@@ -306,6 +306,19 @@ class TestOmdict(unittest.TestCase):
         assert omd.addlist(nonkey) == omd and nonkey not in omd
         assert omd.addlist(nonkey, []) == omd and nonkey not in omd
 
+  def test_remove(self):
+    for init in self.inits:
+      omd = omdict(init)
+      for nonkey in self.nonkeys:
+        omd.addlist(nonkey, [1, 2, 3]).remove(nonkey)
+        assert omd.getlist(nonkey) == []
+        omd.addlist(nonkey, [1, 2, 3, 4]).remove(nonkey, 1)
+        assert omd.getlist(nonkey) == [2, 3, 4]
+        omd.remove(nonkey)
+        omd.addlist(nonkey, [1, 2, 3, 4, 5]).remove(nonkey, 2, 3, 5)
+        assert omd.getlist(nonkey) == [1, 4]
+        omd.remove(nonkey)
+
   def test_setlist(self):
     for init in self.inits:
       omd = omdict(init)
@@ -330,7 +343,7 @@ class TestOmdict(unittest.TestCase):
 
   def test_pop(self):
     self._test_pop_poplist(lambda omd, key: omd.get(key) == omd.pop(key))
-    
+
   def test_poplist(self):
     self._test_pop_poplist(lambda omd,key: omd.getlist(key) == omd.poplist(key))
 
@@ -365,7 +378,7 @@ class TestOmdict(unittest.TestCase):
             else:
               value = omd[key]
               allitems.remove((key, value))
-              
+
             assert value == omd.popvalue(key, last=last)
             assert omd.allitems() == allitems
 
@@ -444,7 +457,7 @@ class TestOmdict(unittest.TestCase):
           assert key == omdcopy.keys()[-1 if last else 0]
           assert valuelist == omdcopy.getlist(key)
           omdcopy.pop(omdcopy.keys()[-1 if last else 0])
-          
+
         # poplistitem() on an empty omdict.
         self.assertRaises(KeyError, omd.poplistitem)
 
@@ -478,7 +491,7 @@ class TestOmdict(unittest.TestCase):
       iterator = izip(omd.iterkeys(), omd.iterlists(), omd.iterlistitems())
       for key, valuelist, listitem in iterator:
         assert listitem == (key, valuelist)
-        
+
       # Test iteritems() and itervalues() with a key.
       for key in omd.iterkeys():
         assert list(omd.iteritems(key)) == zip(repeat(key), omd.getlist(key))
@@ -610,7 +623,7 @@ class TestOmdict(unittest.TestCase):
       self._compare_odict_and_omddict(d, omd)
       self._compare_odict_and_omddict(d.copy(), omd.copy()) # copy().
       d.clear(), omd.clear() # clear().
-      self._compare_odict_and_omddict(d, omd) 
+      self._compare_odict_and_omddict(d, omd)
 
       assert dict().update(init) == omdict().update(init) # update().
       assert d.fromkeys(init).items() == omd.fromkeys(init).items() # fromkeys()
@@ -753,7 +766,7 @@ class TestUtilities(unittest.TestCase):
 
     nonitems = [None, 'asdf', object(), 1000000]
     for nonitem in nonitems:
-      self.assertRaises(ValueError, _rremove, lst, nonitem)      
+      self.assertRaises(ValueError, _rremove, lst, nonitem)
 
 
 def _rfind(lst, item):

@@ -311,6 +311,20 @@ class omdict(object):
       self.add(key, value)
     return self
 
+  def remove(self, key, *values):
+    """
+    Remove all or some values under a specific key.
+
+    Returns: <self>.
+    """
+    if not values:
+      del self[key]
+      return self
+    filtered = list(x for x in self.getlist(key)
+                    if x not in values)
+    self.setlist(key, filtered)
+    return self
+
   def set(self, key, value=None):
     """
     Sets <key>'s value to <value>. Identical in function to __setitem__().
