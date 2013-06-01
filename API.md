@@ -226,6 +226,18 @@ values for __key__. Returns the omdict object for method chaining.
 [(1, 1), (1, 11), (1, 111), (2, 2), (3, 3), (3, 33)]
 ```
 
+__remove(key, *values)__ removes the values in __values__ from the list of
+values for __key__.  If __values__ is empty, deletes the entry entirely.
+Returns the omdict object for method chaining.
+
+```python
+omd = omdict([(1,1)])
+omd.addlist(1, [11, 111])
+omd.remove(1).getlist(1) == []
+omd.addlist(2, [2, 1, 2])
+omd.remove(2, 2).getlist(2) == [1]
+```
+
 
 ### Groups and Group Iteration
 
@@ -486,4 +498,3 @@ value\])](http://docs.python.org/library/stdtypes.html#dict.fromkeys).
 __has_key(key)__ behaves identically to
 [dict.has_key(key)](http://docs.python.org/library/stdtypes.html#dict.has_key). Use
 __key in omd__ instead of omd.has_key(key) where possible.
-
