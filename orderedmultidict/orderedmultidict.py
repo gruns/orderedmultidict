@@ -315,6 +315,13 @@ class omdict(object):
     """
     Remove all or some values under a specific key.
 
+    Example:
+      omd = omdict([(1,1)])
+      omd.addlist(1, [11, 111])
+      omd.remove(1).getlist(1) == []
+      omd.addlist(2, [2, 1, 2])
+      omd.remove(2, 2).getlist(2) == [1]
+
     Returns: <self>.
     """
     if not values:
