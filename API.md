@@ -231,11 +231,15 @@ values for __key__.  If __values__ is empty, deletes the entry entirely.
 Returns the omdict object for method chaining.
 
 ```pycon
-omd = omdict([(1,1)])
-omd.addlist(1, [11, 111])
-omd.remove(1).getlist(1) == []
-omd.addlist(2, [2, 1, 2])
-omd.remove(2, 2).getlist(2) == [1]
+>>> omd = omdict([(1,1)])
+>>> omd.addlist(1, [11, 111])
+>>> omd.remove(1)
+>>> omd.allitems()
+[]
+>>> omd.addlist(2, [3, 1, 3])
+>>> omd.remove(2, 3)
+>>> omd.allitems()
+[(2, 1)]
 ```
 
 
