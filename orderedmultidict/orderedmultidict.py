@@ -88,7 +88,7 @@ class omdict(object):
   key. This means that omdict retains method parity with dict, and a dict object
   can be replaced with an omdict object and all interaction will behave
   identically. All dict methods that retain parity with omdict are:
-  
+
     get(), setdefault(), pop(), popitem(),
     clear(), copy(), update(), fromkeys(), len()
     __getitem__(), __setitem__(), __delitem__(), __contains__(),
@@ -103,9 +103,9 @@ class omdict(object):
   New methods have also been added to omdict. Methods with 'list' in their name
   interact with lists of values, and methods with 'all' in their name interact
   with all items in the dictionary, including multiple items with the same key.
- 
+
   The new omdict methods are:
-  
+
     load(), size(), reverse(),
     getlist(), add(), addlist(), set(), setlist(), setdefaultlist(),
     poplist(), popvalue(), popitem(), poplistitem(),
@@ -147,7 +147,7 @@ class omdict(object):
     self.clear()
     self.updateall(mapping)
     return self
-    
+
   def copy(self):
     return self.__class__(self._items)
 
@@ -198,7 +198,7 @@ class omdict(object):
     for mapping in chain(args, [kwargs]):
       self._bin_update_items(self._items_iterator(mapping), replace_at_most_one,
                              replacements, leftovers)
-    
+
     # First, replace existing values for each key.
     for key, values in replacements.iteritems():
       self.setlist(key, values)
@@ -278,7 +278,7 @@ class omdict(object):
     """
     Add <value> to the list of values for <key>. If <key> is not in the
     dictionary, then <value> is added as the sole value for <key>.
-    
+
     Example:
       omd = omdict()
       omd.add(1, 1)  # omd.allitems() == [(1,1)]
@@ -286,7 +286,7 @@ class omdict(object):
       omd.add(2, 2)  # omd.allitems() == [(1,1), (1,11), (2,2)]
 
     Returns: <self>.
-    """    
+    """
     self._map.setdefault(key, [])
     node = self._items.append(key, value)
     self._map[key].append(node)
@@ -306,7 +306,7 @@ class omdict(object):
       omd.allitems() == [(1, 1), (1, 11), (1, 111), (2, 2)]
 
     Returns: <self>.
-    """    
+    """
     for value in valuelist:
       self.add(key, value)
     return self
@@ -419,7 +419,7 @@ class omdict(object):
       omd.allitems() == [(1,11), (3,3), (2,22)]
       omd.popvalue(1, 11) == 11
       omd.allitems() == [(3,3), (2,22)]
-      omd.popvalue('not a key', default='sup') == 'sup'      
+      omd.popvalue('not a key', default='sup') == 'sup'
 
     Params:
       last: Boolean whether to return <key>'s first value (<last> is False) or
@@ -436,7 +436,7 @@ class omdict(object):
         del self._map[key]
       self._items.removenode(node)
       return node
-    
+
     if key in self:
       if value is not _absent:
         if last:
@@ -561,7 +561,7 @@ class omdict(object):
     Parity with dict.iteritems() except the optional <key> parameter has been
     added. If <key> is provided, only items with the provided key are iterated
     over. KeyError is raised if <key> is provided and not in the dictionary.
-    
+
     Example:
       omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
       omd.iteritems(1) -> (1,1) -> (1,11) -> (1,111)
@@ -586,7 +586,7 @@ class omdict(object):
     added. If <key> is provided, only values from items with the provided key
     are iterated over. KeyError is raised if <key> is provided and not in the
     dictionary.
-    
+
     Example:
       omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
       omd.itervalues(1) -> 1 -> 11 -> 111
@@ -606,7 +606,7 @@ class omdict(object):
     '''
     Raises: KeyError if <key> is provided and not in the dictionary.
     Returns: List created from iterallitems(<key>).
-    '''    
+    '''
     return list(self.iterallitems(key))
 
   def allkeys(self):
@@ -616,7 +616,7 @@ class omdict(object):
       omd.allkeys() == [1,1,1,2,3]
 
     Returns: List created from iterallkeys().
-    '''    
+    '''
     return list(self.iterallkeys())
 
   def allvalues(self, key=_absent):
@@ -628,7 +628,7 @@ class omdict(object):
 
     Raises: KeyError if <key> is provided and not in the dictionary.
     Returns: List created from iterallvalues(<key>).
-    '''    
+    '''
     return list(self.iterallvalues(key))
 
   def iterallitems(self, key=_absent):
@@ -651,7 +651,7 @@ class omdict(object):
     Example:
       omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
       omd.iterallkeys() == 1 -> 1 -> 1 -> 2 -> 3
-        
+
     Returns: An iterator over the keys of every item in the dictionary.
     '''
     return self._items.iterkeys()
@@ -661,7 +661,7 @@ class omdict(object):
     Example:
       omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
       omd.iterallvalues() == 1 -> 11 -> 111 -> 2 -> 3
-        
+
     Returns: An iterator over the values of every item in the dictionary.
     '''
     if key is not _absent:
@@ -675,7 +675,7 @@ class omdict(object):
     Example:
       omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
       omd.iterlists() -> [1,11,111] -> [2] -> [3]
-    
+
     Returns: An iterator over the list comprised of the lists of values for each
     key.
     '''
@@ -713,14 +713,18 @@ class omdict(object):
       for item1, item2 in izip_longest(myiter, otheriter, fillvalue=_absent):
         if item1 != item2 or item1 is _absent or item2 is _absent:
           return False
-    # Ignore order so we can compare ordered omdicts with unordered dicts.
+    elif not hasattr(other, '__len__'):
+      return False
+    elif len(self) != len(other):
+      return False
+    elif not hasattr(other, 'iteritems'):
+      return False
     else:
-      if len(self) != len(other):
-        return False
+      # Ignore order so we can compare ordered omdicts with unordered dicts.
       for key, value in other.iteritems():
         if self.get(key, _absent) != value:
           return False
-    return True      
+    return True
 
   def __ne__(self, other):
     return not self.__eq__(other)
