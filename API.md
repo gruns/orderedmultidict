@@ -10,7 +10,7 @@ ordered list of all items, including multiple items with the same key.
 Here's an example illustrating __getlist(key, default=[])__, a __list__ method,
 and __allitems()__, an __all__ method.
 
-```python
+```pycon
 >>> from orderedmultidict import omdict
 >>> omd = omdict([(1,1), (2,2), (1,11)])
 >>> omd.items()
@@ -39,7 +39,7 @@ identically on omdict objects.
 omdict objects can be initialized from a dictionary or a list of key:value
 items.
 
-```python
+```pycon
 >>> omd = omdict()
 >>> omd.allitems()
 []
@@ -53,7 +53,7 @@ items.
 
 __load(mapping)__ can be used at any time to reinitialize an omdict.
 
-```python
+```pycon
 >>> omd.load({4:4, 5:5})
 >>> omd.allitems()
 [(4, 4), (5, 5)]
@@ -72,7 +72,7 @@ __updateall([mapping])__ updates the dictionary with all items from
 __mapping__. Key order is preserved - existing keys are updated with values from
 __mapping__ before any new items are added.
 
-```python
+```pycon
 >>> omd = omdict()
 >>> omd.update([(1,1), (2,2), (1,11), (2,22)])
 >>> omd.items()
@@ -91,7 +91,7 @@ __omd[key]__ behaves identically to
 [dict\[key\]](http://docs.python.org/library/stdtypes.html#dict). If __key__ has
 multiple values, only its first value is returned.
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,'not me')])
 >>> omd[1]
 1
@@ -101,7 +101,7 @@ __omd[key] = value__ behaves identically to [dict\[key\] =
 value](http://docs.python.org/library/stdtypes.html#dict). If __key__ has
 multiple values, they will all be deleted and replaced with __value__.
 
-```python
+```pycon
 >>> omd = omdict([(1,'deleted'), (1,'deleted')])
 >>> omd[1] = 1
 >>> omd[1]
@@ -112,7 +112,7 @@ __del omd[key]__ behaves identically to [del
 dict\[key\]](http://docs.python.org/library/stdtypes.html#dict). If __key__ has
 multiple values, all of them will be deleted.
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11)])
 >>> del omd[1]
 >>> omd.allitems()
@@ -123,7 +123,7 @@ __get(key, default=None)__ behaves identically to [dict.get(key,
 default=None)](http://docs.python.org/library/stdtypes.html#dict.get). If
 __key__ has multiple values, only its first value is returned.
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,2)])
 >>> omd.get(1)
 1
@@ -134,7 +134,7 @@ __key__ has multiple values, only its first value is returned.
 __getlist(key, default=[])__ is like get(key, default=None) except it returns
 the list of values assocaited with __key__.
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11), (2,2)])
 >>> omd.getlist(1)
 [1, 11]
@@ -147,7 +147,7 @@ the list of values assocaited with __key__.
 __set(key, value=None)__ sets __key__'s value to __value__. Identical in
 function to omd[key] = value. Returns the omdict object for method chaining.
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11), (1,111)])
 >>> omd.set(1, 1)
 >>> omd.getlist(1)
@@ -160,7 +160,7 @@ function to omd[key] = value. Returns the omdict object for method chaining.
 __setlist(key, values=[])__ sets __key__'s list of values to __values__. Returns
 the omdict object for method chaining.
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (2,2)])
 >>> omd.setlist(1, ['replaced', 'appended'])
 >>> omd.allitems()
@@ -173,7 +173,7 @@ the omdict object for method chaining.
 __setdefault(key, default=None)__ behaves identically to [dict.setdefault(key,
 default=None)](http://docs.python.org/library/stdtypes.html#dict.setdefault).
 
-```python
+```pycon
 >>> omd = omdict([(1,1)])
 >>> omd.setdefault(1)
 1
@@ -186,7 +186,7 @@ __setdefaultlist(key, defaultlist=[None])__ is like setdefault(key, default=None
 except a list of values for __key__ is adopted. If __defaultlist__ isn't
 provided, __key__'s value becomes None.
 
-```python
+```pycon
 >>> omd = omdict([(1,1)])
 >>> omd.setdefaultlist(1)
 [1]
@@ -203,7 +203,7 @@ None
 __add(key, value=None)__ adds __value__ to the list of values for __key__.
 Returns the omdict object for method chaining.
 
-```python
+```pycon
 >>> omd = omdict()
 >>> omd.add(1, 1)
 >>> omd.allitems()
@@ -216,7 +216,7 @@ Returns the omdict object for method chaining.
 __addlist(key, valuelist=[])__ adds the values in __valuelist__ to the list of
 values for __key__. Returns the omdict object for method chaining.
 
-```python
+```pycon
 >>> omd = omdict([(1,1)])
 >>> omd.addlist(1, [11, 111])
 >>> omd.allitems()
@@ -235,7 +235,7 @@ an optional __key__ parameter has been added. If __key__ is provided, only items
 with key __key__ are returned. __iteritems([key])__ returns an iterator over
 items(key). KeyError is raised if __key__ is provided and not in the dictionary.
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
 >>> omd.items()
 [(1, 1), (2, 2), (3, 3)]
@@ -254,7 +254,7 @@ values for __key__ are returned. __itervalues([key])__ returns an iterator over
 values(key). KeyError is raised if __key__ is provided and not in the
 dictionary.
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
 >>> omd.values()
 [1, 2, 3]
@@ -265,7 +265,7 @@ dictionary.
 __lists()__ returns a list comprised of the lists of values associated with each
 dictionary key. __iterlists()__ returns and iterator over lists().
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
 >>> omd.lists()
 [[1, 11, 111], [2], [3]]
@@ -274,7 +274,7 @@ dictionary key. __iterlists()__ returns and iterator over lists().
 __listitems()__ returns a list of key:valuelist items. __iterlistitems()__
 returns an iterator over listitems().
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3), (2,22)])
 >>> omd.listitems()
 [(1, [1, 11, 111]), (2, [2, 22]), (3, [3])]
@@ -286,7 +286,7 @@ only items with key __key__ are returned . KeyError is raised if __key__ is
 provided and not in the dictionary. __iterallitems([key])__ returns an iterator
 over allitems(key).
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
 >>> omd.allitems()
 [(1, 1), (1, 11), (1, 111), (2, 2), (3, 3)]
@@ -295,7 +295,7 @@ over allitems(key).
 __allkeys()__ returns a list of the keys of every item in the dictionary.
 __iterallkeys()__ returns an iterator over allkeys().
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
 >>> omd.allkeys()
 [1, 1, 1, 2, 3]
@@ -304,7 +304,7 @@ __iterallkeys()__ returns an iterator over allkeys().
 __allvalues()__ returns a list of the values of every item in the dictionary.
 __iterallvalues()__ returns an iterator over allvalues().
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
 >>> omd.allvalues()
 [1, 11, 111, 2, 3]
@@ -319,7 +319,7 @@ has multiple values, the first value is returned but all items with key __key__
 are popped. KeyError is raised if __default__ isn't provided and __key__ isn't
 in the dictionary.
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (2,2), (1,11)])
 >>> omd.pop(1)
 1
@@ -331,7 +331,7 @@ __poplist(key[, default])__ is like pop(key[, default]) except it returns the
 list of values for __key__. KeyError is raised if __default__ isn't provided and
 __key__ isn't in the dictionary.
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
 >>> omd.poplist(1)
 [1, 11, 111]
@@ -359,7 +359,7 @@ the dictionary. KeyError is raised if __default__ isn't provided and __key__
 isn't in the dictionary. ValueError is raised if <value> is provided but isn't a
 value for <key>.
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3), (2,22)])
 >>> omd.popvalue(1)
 111
@@ -391,7 +391,7 @@ If __fromall__ is True, allitems()[0] is popped if __last__ is False or
 allitems()[-1] is popped if __last__ is True. No other remaining items are
 removed, even if they have the same key.
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
 >>> omd.popitem()
 (3, 3)
@@ -420,7 +420,7 @@ returned. If __last__ is True, a key:valuelist item comprised of keys()[-1] and
 its list of values is popped and returned. KeyError is raised if the dictionary
 is empty or if __key__ is provided and not in the dictionary.
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
 >>> omd.poplistitem(last=True)
 (3, [3])
@@ -433,7 +433,7 @@ is empty or if __key__ is provided and not in the dictionary.
 
 __copy()__ returns a shallow copy of the dictionary.
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11), (2,2), (3,3)])
 >>> copy = omd.copy()
 >>> omd == copy
@@ -444,7 +444,7 @@ True
 
 __clear()__ clears all items.
 
-```python
+```pycon
 >>> omd = omdict([(1,1), (1,11), (2,2), (3,3)])
 >>> omd.clear()
 >>> omd.allitems()
@@ -454,7 +454,7 @@ __clear()__ clears all items.
 __len(omd)__ returns the number of keys in the dictionary, identical to
 [len(dict)](http://docs.python.org/library/stdtypes.html#dict).
 
-```python
+```pycon
 >>> omd = omdict([(1, 1), (2, 2), (1, 11)])
 >>> len(omd)
 2
@@ -462,7 +462,7 @@ __len(omd)__ returns the number of keys in the dictionary, identical to
 
 __size()__ returns the total number of items in the dictionary.
 
-```python
+```pycon
 >>> omd = omdict([(1, 1), (1, 11), (2, 2), (1, 111)])
 >>> omd.size()
 4
@@ -471,7 +471,7 @@ __size()__ returns the total number of items in the dictionary.
 __reverse()__ reverses the order of all items in the dictionary and returns the
 omdict object for method chaining.
 
-```python
+```pycon
 >>> omd = omdict([(1, 1), (2, 2), (3, 3)])
 >>> omd.allitems()
 [(1, 1), (2, 2), (3, 3)]

@@ -11,7 +11,7 @@ you can build amazing things.
 
 omdict can store multiple values per key.
 
-```python
+```pycon
 >>> from orderedmultidict import omdict
 >>> omd = omdict()
 >>> omd[1] = 1
@@ -29,7 +29,7 @@ omdict can store multiple values per key.
 
 omdict retains insertion and deletion order.
 
-```python
+```pycon
 >>> omd = omdict()
 >>> omd[2] = 2
 >>> omd[1] = 1
@@ -42,7 +42,7 @@ omdict retains insertion and deletion order.
 
 Method parity with dict is retained. omdict can be a drop-in replacement.
 
-```python
+```pycon
 >>> d, omd = dict(), omdict()
 >>> d.update([(1,1), (1,11), (2,2), (2,22)])
 >>> omd.update([(1,1), (1,11), (2,2), (2,22)])
