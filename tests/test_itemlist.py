@@ -1,5 +1,5 @@
 #
-# omdict: Ordered Multivalue Dictionary.
+# omdict - Ordered Multivalue Dictionary.
 #
 # Arthur Grunseid
 # grunseid.com
