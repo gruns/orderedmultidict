@@ -315,7 +315,7 @@ class TestOmdict(unittest.TestCase):
         assert omd.setlist(key, self.valuelist)
         assert key in omd and omd.getlist(key) == self.valuelist
 
-    # Setting a key to an empty list is equivalent deleting that key.
+    # Setting a key to an empty list is identical to deleting the key.
     for init in self.inits:
       omd = omdict(init)
       for nonkey in self.nonkeys:
@@ -327,6 +327,31 @@ class TestOmdict(unittest.TestCase):
         omd.setlist(key, [])
         assert key not in omd
       assert not omd
+
+  def test_removevalues(self):
+    for init in self.inits:
+      omd = omdict(init)
+      for nonkey in self.nonkeys:
+        obj = object()
+        values = [1, 1.1, '1.1', (), [], {}, obj, 5.5, '1.1']
+
+        assert omd.removevalues(nonkey, []).getlist(nonkey) == []
+        assert omd.removevalues(nonkey, values).getlist(nonkey) == []
+
+        omd.addlist(nonkey, values).removevalues(nonkey, [])
+        assert omd.getlist(nonkey) == values
+        assert omd.removevalues(nonkey, values).getlist(nonkey) == []
+
+        omd.addlist(nonkey, values)
+        assert (omd.removevalues(nonkey, [1]).getlist(nonkey) == 
+                [1.1, '1.1', (), [], {}, obj, 5.5, '1.1'])
+        assert (omd.removevalues(nonkey, ['1.1', obj]).getlist(nonkey) ==
+                [1.1, (), [], {}, 5.5])
+        assert (omd.removevalues(nonkey, [[], 5.5, ()]).getlist(nonkey) ==
+                [1.1, {}])
+        assert omd.removevalues(nonkey, [{}]).getlist(nonkey) == [1.1]
+        assert omd.removevalues(nonkey, [1.1]).getlist(nonkey) == []
+        assert omd.removevalues(nonkey, [9, 9.9, 'nope']).getlist(nonkey) == []
 
   def test_pop(self):
     self._test_pop_poplist(lambda omd, key: omd.get(key) == omd.pop(key))
@@ -536,6 +561,9 @@ class TestOmdict(unittest.TestCase):
     diff = omdict([(_unique, _unique)])
     for init in self.inits:
       assert omdict(init) != diff
+      # Compare to basic types.
+      for basic in [1, 1.1, '1.1', (), [], object()]:
+        assert omdict(init) != basic
 
   def test_len(self):
     for init in self.inits:

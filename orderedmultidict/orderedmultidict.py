@@ -74,7 +74,7 @@ _absent = object() # Marker that means no parameter was provided.
 
 class omdict(object):
   """
-  omdict: Ordered Multivalue Dictionary.
+  Ordered Multivalue Dictionary.
 
   A multivalue dictionary is a dictionary that can store multiple values per
   key. An ordered multivalue dictionary is a multivalue dictionary that retains
@@ -108,7 +108,7 @@ class omdict(object):
   
     load(), size(), reverse(),
     getlist(), add(), addlist(), set(), setlist(), setdefaultlist(),
-    poplist(), popvalue(), popitem(), poplistitem(),
+    poplist(), popvalue(), popvalues(), popitem(), poplistitem(),
     allitems(), allkeys(), allvalues(), lists(), listitems(),
     iterallitems(), iterallkeys(), iterallvalues(), iterlists(), iterlistitems()
 
@@ -360,6 +360,21 @@ class omdict(object):
           self._items.removenode(node)
     return self
 
+  def removevalues(self, key, values):
+    """
+    Removes all <values> from the values of <key>. If <key> has no remaining
+    values after removevalues(), the key is popped.
+
+    Example:
+      omd = omdict([(1, 1), (1, 11), (1, 1), (1, 111)])
+      omd.removevalues(1, [1, 111])
+      omd.allitems() == [(1, 11)]
+
+    Returns: <self>.
+    """
+    self.setlist(key, [v for v in self.getlist(key) if v not in values])
+    return self
+
   def pop(self, key, default=_absent):
     if key in self:
       return self.poplist(key)[0]
@@ -419,7 +434,7 @@ class omdict(object):
       omd.allitems() == [(1,11), (3,3), (2,22)]
       omd.popvalue(1, 11) == 11
       omd.allitems() == [(3,3), (2,22)]
-      omd.popvalue('not a key', default='sup') == 'sup'      
+      omd.popvalue('not a key', default='sup') == 'sup'
 
     Params:
       last: Boolean whether to return <key>'s first value (<last> is False) or
@@ -713,6 +728,8 @@ class omdict(object):
       for item1, item2 in izip_longest(myiter, otheriter, fillvalue=_absent):
         if item1 != item2 or item1 is _absent or item2 is _absent:
           return False
+    elif not hasattr(other, '__len__') or not hasattr(other, 'iteritems'):
+      return False
     # Ignore order so we can compare ordered omdicts with unordered dicts.
     else:
       if len(self) != len(other):
