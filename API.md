@@ -356,8 +356,8 @@ and __value__ is returned.
 If __key__ no longer has any values after a popvalue() call, __key__ is removed
 from the dictionary. __default__ is returned if provided and __key__ isn't in
 the dictionary. KeyError is raised if __default__ isn't provided and __key__
-isn't in the dictionary. ValueError is raised if <value> is provided but isn't a
-value for <key>.
+isn't in the dictionary. ValueError is raised if __value__ is provided but isn't a
+value for __key__.
 
 ```pycon
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3), (2,22)])
@@ -484,6 +484,6 @@ __fromkeys(keys[, value])__ behaves identically to [dict.fromkeys(key\[,
 value\])](http://docs.python.org/library/stdtypes.html#dict.fromkeys).
 
 __has_key(key)__ behaves identically to
-[dict.has_key(key)](http://docs.python.org/library/stdtypes.html#dict.has_key). Use
-__key in omd__ instead of omd.has_key(key) where possible.
+[dict.has_key(key)](http://docs.python.org/library/stdtypes.html#dict.has_key),
+but use `key in omd` instead of `omd.has_key(key)` where possible.
 
