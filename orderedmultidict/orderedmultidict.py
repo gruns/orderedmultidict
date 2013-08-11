@@ -174,6 +174,7 @@ class omdict(object):
 
   def update(self, *args, **kwargs):
     self._update_updateall(True, *args, **kwargs)
+    return self
 
   def updateall(self, *args, **kwargs):
     """
