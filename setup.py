@@ -1,9 +1,17 @@
 import os
+import re
 import sys
-
+from os.path import dirname, join as pjoin
 from setuptools import setup, find_packages
 
+with open(pjoin(dirname(__file__), 'orderedmultidict', '__init__.py')) as fd:
+  VERSION = re.compile(
+    r".*__version__ = '(.*?)'", re.S).match(fd.read()).group(1)
+
 if sys.argv[-1] == 'publish':
+  """
+  Publish to PyPi.
+  """
   os.system('python setup.py sdist upload')
   sys.exit()
 
@@ -21,7 +29,7 @@ if sys.version_info[:2] <= (2,6):
   required.append('ordereddict')
 
 setup(name='orderedmultidict',
-      version='0.7.1', # Keep synchronized with __init__.py.
+      version=VERSION, # Keep synchronized with __init__.py.
       author='Arthur Grunseid',
       author_email='grunseid@gmail.com',
       url='https://github.com/gruns/orderedmultidict',
