@@ -8,7 +8,7 @@
 # License: Build Amazing Things (Unlicense)
 
 __title__ = 'orderedmultidict'
-__version__ = '0.7.2'
+__version__ = '0.7.3'
 __author__ = 'Arthur Grunseid'
 __contact__ = 'grunseid@gmail.com'
 __license__ = 'Unlicense'

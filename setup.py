@@ -29,7 +29,7 @@ if sys.version_info[:2] <= (2,6):
   required.append('ordereddict')
 
 setup(name='orderedmultidict',
-      version=VERSION, # Keep synchronized with __init__.py.
+      version=VERSION,
       author='Arthur Grunseid',
       author_email='grunseid@gmail.com',
       url='https://github.com/gruns/orderedmultidict',
