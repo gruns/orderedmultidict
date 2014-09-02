@@ -43,7 +43,7 @@ _absent = object()  # Marker that means no parameter was provided.
 #   omd = omdict()
 #   omd.values(1) = [1, 11]
 #   omd.allitems() == [(1,1), (1,11)]
-#   omd.values(1) = map(lambda i: i * -10, omd.values(1))
+#   omd.values(1) = list(map(lambda i: i * -10, omd.values(1)))
 #   omd.allitems() == [(1,-10), (1,-110)]
 #   omd.allitems() = filter(lambda (k,v): v > -100, omd.allitems())
 #   omd.allitems() == [(1,-10)]
@@ -773,8 +773,8 @@ class omdict(object):
         return bool(self._map)
 
     def __str__(self):
-        return '{%s}' % ', '.join(map(lambda p: '%r: %r' % (p[0], p[1]),
-                                      self.iterallitems()))
+        return '{%s}' % ', '.join(imap(lambda p: '%r: %r' % (p[0], p[1]),
+                                       self.iterallitems()))
 
     def __repr__(self):
         return '%s(%s)' % (self.__class__.__name__, self.allitems())

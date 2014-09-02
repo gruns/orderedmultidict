@@ -12,7 +12,7 @@ try:
     from collections import OrderedDict as odict  # Python 2.7+.
 except ImportError:
     from ordereddict import OrderedDict as odict  # Python 2.4-2.6.
-from itertools import izip, izip_longest, repeat, product
+from itertools import imap, izip, izip_longest, repeat, product
 
 from orderedmultidict.orderedmultidict import omdict
 
@@ -56,22 +56,22 @@ class TestOmdict(unittest.TestCase):
             {}, {1: 1}, {1: 1, 2: 2, 3: 3}, {None: None}, {
                 None: None, 1: 1, 2: 2}, {False: False},
         ]
-        self.inits += map(itemlist, [
+        self.inits += list(map(itemlist, [
             [], [(1, 1)], [(1, 1), (2, 2)], [(1, 1), (2, 2), (1, 1)],
             [(1, 1), (1, 1), (1, 1)], [(None, None), (None, None)],
             [(False, False)],
             [(None, 1), (1, None), (None, None), (None, 1), (1, None)],
-        ])
+        ]))
 
         # Updates to test update() and updateall().
         self.updates = [
             {}, {7: 7}, {7: 7, 8: 8, 9: 9}, {None: None}, {1: 1, 2: 2}]
-        self.updates += map(itemlist, [
+        self.updates += list(map(itemlist, [
             [], [(7, 7)], [(7, 7), (8, 8), (9, 9)], [(None, 'none')],
             [(9, 9), (1, 2)], [(7, 7), (7, 7), (8, 8), (7, 77)],
             [(1, 11), (1, 111), (1, 1111), (2, 22),
                 (2, 222), ('a', 'a'), ('a', 'aa')],
-        ])
+        ]))
 
         self.keyword_updates = [
             {}, {'1': 1}, {'1': 1, '2': 2}, {
@@ -119,7 +119,7 @@ class TestOmdict(unittest.TestCase):
         for init in self.inits:
             keys = [key for key, value in init.items()]
             allitems = omdict.fromkeys(keys, _unique).allitems()
-            assert allitems == zip(keys, repeat(_unique))
+            assert allitems == list(zip(keys, repeat(_unique)))
 
     def test_has_key(self):
         for init in self.inits:
@@ -302,7 +302,7 @@ class TestOmdict(unittest.TestCase):
                 assert omd.addlist(nonkey, self.valuelist) == omd
                 assert omd.getlist(nonkey) == self.valuelist
                 assert (omd.allitems()[-1 * len(self.valuelist):] ==
-                        zip(repeat(nonkey), self.valuelist))
+                        list(zip(repeat(nonkey), self.valuelist)))
 
             # Repeat the addlist() calls with the same items and make sure the old
             # items aren't replaced.
@@ -316,7 +316,7 @@ class TestOmdict(unittest.TestCase):
                 assert omd.getlist(nonkey) == oldomd.getlist(
                     nonkey) + self.valuelist
                 assert (omd.allitems()[-1 * len(self.valuelist):] ==
-                        zip(repeat(nonkey), self.valuelist))
+                        list(zip(repeat(nonkey), self.valuelist)))
 
             # If an empty list is provided to addlist(), nothing is added.
             omd = omdict(init)
@@ -528,10 +528,10 @@ class TestOmdict(unittest.TestCase):
 
             # Test iteritems() and itervalues() with a key.
             for key in omd.iterkeys():
-                assert list(omd.iteritems(key)) == zip(
-                    repeat(key), omd.getlist(key))
-                assert list(omd.iterallitems(key)) == zip(
-                    repeat(key), omd.getlist(key))
+                assert list(omd.iteritems(key)) == list(zip(
+                    repeat(key), omd.getlist(key)))
+                assert list(omd.iterallitems(key)) == list(zip(
+                    repeat(key), omd.getlist(key)))
             for nonkey in self.nonkeys:
                 self.assertRaises(KeyError, omd.iteritems, nonkey)
                 self.assertRaises(KeyError, omd.itervalues, nonkey)
@@ -552,11 +552,11 @@ class TestOmdict(unittest.TestCase):
             assert omd.allvalues() == values
 
             # Test iterallitems(), iterallkeys(), iterallvalues().
-            for key1, key2 in zip(omd.iterallkeys(), keys):
+            for key1, key2 in izip(omd.iterallkeys(), keys):
                 assert key1 == key2
-            for val1, val2 in zip(omd.iterallvalues(), values):
+            for val1, val2 in izip(omd.iterallvalues(), values):
                 assert val1 == val2
-            for item1, item2 in zip(omd.iterallitems(), init.items()):
+            for item1, item2 in izip(omd.iterallitems(), init.items()):
                 assert item1 == item2
 
             # Test allitems(), allvalues(), iterallitems() and iterallvalues() with a
@@ -565,7 +565,7 @@ class TestOmdict(unittest.TestCase):
                 assert (omd.allvalues(key) == list(omd.iterallvalues(key)) ==
                         omd.getlist(key))
                 assert (omd.allitems(key) == list(omd.iterallitems(key)) ==
-                        zip(repeat(key), omd.getlist(key)))
+                        list(zip(repeat(key), omd.getlist(key))))
             for nonkey in self.nonkeys:
                 self.assertRaises(KeyError, omd.allvalues, nonkey)
                 self.assertRaises(KeyError, omd.allitems, nonkey)
@@ -652,7 +652,7 @@ class TestOmdict(unittest.TestCase):
         for init in self.inits:
             omd = omdict(init)
             s = '{%s}' % ', '.join(
-                map(lambda p: '%s: %s' % (p[0], p[1]), omd.allitems()))
+                imap(lambda p: '%s: %s' % (p[0], p[1]), omd.allitems()))
             assert s == str(omd)
 
     def test_odict_omdict_parity(self):
