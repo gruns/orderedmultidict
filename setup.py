@@ -5,15 +5,14 @@ from os.path import dirname, join as pjoin
 from setuptools import setup, find_packages
 
 with open(pjoin(dirname(__file__), 'orderedmultidict', '__init__.py')) as fd:
-  VERSION = re.compile(
-    r".*__version__ = '(.*?)'", re.S).match(fd.read()).group(1)
+    VERSION = re.compile(r".*__version__ = '(.*?)'", re.S).match(fd.read()).group(1)
 
 if sys.argv[-1] == 'publish':
-  """
-  Publish to PyPi.
-  """
-  os.system('python setup.py sdist upload')
-  sys.exit()
+    """
+    Publish to PyPi.
+    """
+    os.system('python setup.py sdist upload')
+    sys.exit()
 
 long_description = ('''
 A multivalue dictionary is a dictionary that can store multiple values for the
@@ -24,9 +23,9 @@ omdict retains method parity with dict.
 
 Information and documentation at https://github.com/gruns/orderedmultidict.''')
 
-required = []
-if sys.version_info[:2] <= (2,6):
-  required.append('ordereddict')
+required = ['six']
+if sys.version_info < (2, 7):
+    required.append('ordereddict')
 
 setup(name='orderedmultidict',
       version=VERSION,
