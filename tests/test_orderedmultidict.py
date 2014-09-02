@@ -12,7 +12,8 @@ try:
     from collections import OrderedDict as odict  # Python 2.7+.
 except ImportError:
     from ordereddict import OrderedDict as odict  # Python 2.4-2.6.
-from itertools import imap, izip, izip_longest, repeat, product
+from itertools import repeat, product
+from six.moves import map, zip, zip_longest
 
 from orderedmultidict.orderedmultidict import omdict
 
@@ -138,7 +139,7 @@ class TestOmdict(unittest.TestCase):
         assert omd.allitems() == [(1, None), (2, None), (3, None)]
 
         for init in self.inits:
-            for update, keyword_update in izip(self.updates, self.keyword_updates):
+            for update, keyword_update in zip(self.updates, self.keyword_updates):
                 omd1, omd2, omd3 = omdict(init), omdict(init), omdict(init)
                 oldomd = omd1.copy()
                 # Reduce the update to just the final items that will be present post
@@ -181,7 +182,7 @@ class TestOmdict(unittest.TestCase):
             (1, None), (1, None), (2, None), (3, 3), (1, None)]
 
         for init in self.inits:
-            for update, keyword_update in izip(self.updates, self.keyword_updates):
+            for update, keyword_update in zip(self.updates, self.keyword_updates):
                 omd1, omd2, omd3 = omdict(init), omdict(init), omdict(init)
                 oldomd = omd1.copy()
 
@@ -505,7 +506,7 @@ class TestOmdict(unittest.TestCase):
             assert omd.items() == dic.items()
             assert omd.keys() == dic.keys()
             assert omd.values() == dic.values()
-            iterator = izip(omd.keys(), omd.lists(), omd.listitems())
+            iterator = zip(omd.keys(), omd.lists(), omd.listitems())
             for key, valuelist, listitem in iterator:
                 assert omd.values(key) == omd.getlist(key) == valuelist
                 assert omd.items(
@@ -513,15 +514,15 @@ class TestOmdict(unittest.TestCase):
                 assert listitem == (key, valuelist)
 
             # Testing iteritems(), iterkeys(), itervalues(), and iterlists().
-            for key1, key2 in izip(omd.iterkeys(), dic.iterkeys()):
+            for key1, key2 in zip(omd.iterkeys(), dic.iterkeys()):
                 assert key1 == key2
-            for val1, val2 in izip(omd.itervalues(), dic.itervalues()):
+            for val1, val2 in zip(omd.itervalues(), dic.itervalues()):
                 assert val1 == val2
-            for item1, item2 in izip(omd.iteritems(), dic.iteritems()):
+            for item1, item2 in zip(omd.iteritems(), dic.iteritems()):
                 assert item1 == item2
-            for key, values in izip(omd.iterkeys(), omd.iterlists()):
+            for key, values in zip(omd.iterkeys(), omd.iterlists()):
                 assert omd.getlist(key) == values
-            iterator = izip(
+            iterator = zip(
                 omd.iterkeys(), omd.iterlists(), omd.iterlistitems())
             for key, valuelist, listitem in iterator:
                 assert listitem == (key, valuelist)
@@ -552,11 +553,11 @@ class TestOmdict(unittest.TestCase):
             assert omd.allvalues() == values
 
             # Test iterallitems(), iterallkeys(), iterallvalues().
-            for key1, key2 in izip(omd.iterallkeys(), keys):
+            for key1, key2 in zip(omd.iterallkeys(), keys):
                 assert key1 == key2
-            for val1, val2 in izip(omd.iterallvalues(), values):
+            for val1, val2 in zip(omd.iterallvalues(), values):
                 assert val1 == val2
-            for item1, item2 in izip(omd.iterallitems(), init.items()):
+            for item1, item2 in zip(omd.iterallitems(), init.items()):
                 assert item1 == item2
 
             # Test allitems(), allvalues(), iterallitems() and iterallvalues() with a
@@ -600,7 +601,7 @@ class TestOmdict(unittest.TestCase):
     def test_iter(self):
         for init in self.inits:
             omd = omdict(init)
-            for key1, key2 in izip_longest(iter(omd), omd.iterkeys()):
+            for key1, key2 in zip_longest(iter(omd), omd.iterkeys()):
                 assert key1 == key2
 
     def test_contains(self):
@@ -652,7 +653,7 @@ class TestOmdict(unittest.TestCase):
         for init in self.inits:
             omd = omdict(init)
             s = '{%s}' % ', '.join(
-                imap(lambda p: '%s: %s' % (p[0], p[1]), omd.allitems()))
+                map(lambda p: '%s: %s' % (p[0], p[1]), omd.allitems()))
             assert s == str(omd)
 
     def test_odict_omdict_parity(self):
@@ -673,7 +674,7 @@ class TestOmdict(unittest.TestCase):
         assert len(d) == len(omd)  # __len__().
 
         # __contains__(), has_key(), get(), and setdefault().
-        for dkey, omdkey in izip(d, omd):
+        for dkey, omdkey in zip(d, omd):
             assert dkey == omdkey and dkey in d and omdkey in omd
             assert dkey in d and omdkey in omd
             assert d.get(dkey) == omd.get(omdkey)
@@ -688,10 +689,10 @@ class TestOmdict(unittest.TestCase):
 
         # items(), keys, values(), iteritems(), iterkeys, and itervalues().
         iterators = [
-            izip(d.items(), omd.items(), d.keys(), omd.keys(),
-                 d.values(), omd.values()),
-            izip(d.iteritems(), omd.iteritems(), d.iterkeys(), omd.iterkeys(),
-                 d.itervalues(), omd.itervalues())]
+            zip(d.items(), omd.items(), d.keys(), omd.keys(),
+                d.values(), omd.values()),
+            zip(d.iteritems(), omd.iteritems(), d.iterkeys(), omd.iterkeys(),
+                d.itervalues(), omd.itervalues())]
         for iterator in iterators:
             for ditem, omditem, dkey, omdkey, dvalue, omdvalue in iterator:
                 assert ditem == omditem and dkey == omdkey and dvalue == omdvalue
@@ -706,10 +707,10 @@ class TestOmdict(unittest.TestCase):
             assert dcopy.popitem() == omdcopy.popitem()
 
         # __getitem__().
-        for dkey, omdkey in izip(d.iterkeys(), omd.iterkeys()):
+        for dkey, omdkey in zip(d.iterkeys(), omd.iterkeys()):
             assert d[dkey] == omd[omdkey]
         # __setitem__().
-        for dkey, omdkey in izip(d, omd):
+        for dkey, omdkey in zip(d, omd):
             d[dkey] = _unique
             omd[omdkey] = _unique
             assert dkey == omdkey and d[dkey] == omd[omdkey]

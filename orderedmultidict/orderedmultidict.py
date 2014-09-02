@@ -11,7 +11,8 @@ try:
     from collections import OrderedDict as odict
 except ImportError:
     from ordereddict import OrderedDict as odict
-from itertools import imap, izip_longest, chain
+from six.moves import map, zip_longest
+from itertools import chain
 
 from itemlist import itemlist
 
@@ -352,7 +353,7 @@ class omdict(object):
         if not values and key in self:
             self.pop(key)
         else:
-            it = izip_longest(
+            it = zip_longest(
                 list(self._map.get(key, [])), values, fillvalue=_absent)
             for node, value in it:
                 if node is not _absent and value is not _absent:
@@ -700,7 +701,7 @@ class omdict(object):
         Returns: An iterator over the list comprised of the lists of values for each
         key.
         '''
-        return imap(lambda key: self.getlist(key), self)
+        return map(lambda key: self.getlist(key), self)
 
     def iterlistitems(self):
         """
@@ -710,7 +711,7 @@ class omdict(object):
 
         Returns: An iterator over the list of key:valuelist items.
         """
-        return imap(lambda key: (key, self.getlist(key)), self)
+        return map(lambda key: (key, self.getlist(key)), self)
 
     def reverse(self):
         """
@@ -731,7 +732,7 @@ class omdict(object):
     def __eq__(self, other):
         if hasattr(other, 'iterallitems') and callable(other.iterallitems):
             myiter, otheriter = self.iterallitems(), other.iterallitems()
-            for item1, item2 in izip_longest(myiter, otheriter, fillvalue=_absent):
+            for item1, item2 in zip_longest(myiter, otheriter, fillvalue=_absent):
                 if item1 != item2 or item1 is _absent or item2 is _absent:
                     return False
         elif not hasattr(other, '__len__') or not hasattr(other, 'iteritems'):
@@ -773,8 +774,8 @@ class omdict(object):
         return bool(self._map)
 
     def __str__(self):
-        return '{%s}' % ', '.join(imap(lambda p: '%r: %r' % (p[0], p[1]),
-                                       self.iterallitems()))
+        return '{%s}' % ', '.join(map(lambda p: '%r: %r' % (p[0], p[1]),
+                                      self.iterallitems()))
 
     def __repr__(self):
         return '%s(%s)' % (self.__class__.__name__, self.allitems())

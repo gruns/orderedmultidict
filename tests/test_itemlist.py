@@ -8,7 +8,7 @@
 # License: Build Amazing Things (Unlicense)
 
 import unittest
-from itertools import izip
+from six.moves import zip
 
 from orderedmultidict.itemlist import itemlist
 
@@ -63,8 +63,8 @@ class TestItemList(unittest.TestCase):
     def test_items_keys_values_iteritems_iterkeys_itervalues(self):
         for init in self.inits:
             il = itemlist(init)
-            iterator = izip(izip(il.items(), il.keys(), il.values()),
-                            izip(il.iteritems(), il.iterkeys(), il.itervalues()))
+            iterator = zip(zip(il.items(), il.keys(), il.values()),
+                           zip(il.iteritems(), il.iterkeys(), il.itervalues()))
             for (item1, key1, value1), (item2, key2, value2) in iterator:
                 assert item1 == item2 and key1 == key2 and value1 == value2
 

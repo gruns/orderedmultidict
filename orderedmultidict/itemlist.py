@@ -7,7 +7,7 @@
 #
 # License: Build Amazing Things (Unlicense)
 
-from itertools import izip_longest
+from six.moves import zip_longest
 
 _absent = object()  # Marker that means no parameter was provided.
 
@@ -138,7 +138,7 @@ class itemlist(object):
         self.removenode(self[index])
 
     def __eq__(self, other):
-        for (n1, key1, value1), (n2, key2, value2) in izip_longest(self, other):
+        for (n1, key1, value1), (n2, key2, value2) in zip_longest(self, other):
             if key1 != key2 or value1 != value2:
                 return False
         return True
