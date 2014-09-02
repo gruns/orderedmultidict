@@ -6,6 +6,7 @@
 # grunseid@gmail.com
 #
 # License: Build Amazing Things (Unlicense)
+from __future__ import absolute_import
 
 try:
     from collections import OrderedDict as odict
@@ -14,7 +15,7 @@ except ImportError:
 from six.moves import map, zip_longest
 from itertools import chain
 
-from itemlist import itemlist
+from .itemlist import itemlist
 
 _absent = object()  # Marker that means no parameter was provided.
 

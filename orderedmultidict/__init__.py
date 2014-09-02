@@ -6,6 +6,7 @@
 # grunseid@gmail.com
 #
 # License: Build Amazing Things (Unlicense)
+from __future__ import absolute_import
 
 __title__ = 'orderedmultidict'
 __version__ = '0.7.3'

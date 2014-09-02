@@ -6,6 +6,7 @@
 # grunseid@gmail.com
 #
 # License: Build Amazing Things (Unlicense)
+from __future__ import absolute_import
 
 import unittest
 from six.moves import zip
