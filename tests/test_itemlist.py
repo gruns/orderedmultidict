@@ -8,7 +8,7 @@
 # License: Build Amazing Things (Unlicense)
 
 import unittest
-from itertools import izip, izip_longest, repeat, product
+from itertools import izip
 
 from orderedmultidict.itemlist import itemlist
 

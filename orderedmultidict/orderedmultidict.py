@@ -11,7 +11,7 @@ try:
     from collections import OrderedDict as odict
 except ImportError:
     from ordereddict import OrderedDict as odict
-from itertools import imap, izip, izip_longest, repeat, chain
+from itertools import imap, izip_longest, chain
 
 from itemlist import itemlist
 
@@ -510,7 +510,7 @@ class omdict(object):
 
         if fromall:
             node = self._items[-1 if last else 0]
-            key, value = node.key, node.value
+            key = node.key
             return key, self.popvalue(key, last=last)
         else:
             key = self._map.keys()[-1 if last else 0]
@@ -595,7 +595,7 @@ class omdict(object):
             if key in self:
                 return iter([(node.key, node.value) for node in self._map[key]])
             raise KeyError(key)
-        return iter([(key, nodes[0].value) for (key, nodes) in self._map.iteritems()])
+        return ((key, nodes[0].value) for (key, nodes) in self._map.iteritems())
 
     def iterkeys(self):
         return self._map.iterkeys()

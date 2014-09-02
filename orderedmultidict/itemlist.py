@@ -7,7 +7,6 @@
 #
 # License: Build Amazing Things (Unlicense)
 
-from collections import namedtuple
 from itertools import izip_longest
 
 _absent = object()  # Marker that means no parameter was provided.
@@ -44,9 +43,6 @@ class itemlist(object):
 
         for key, value in items:
             self.append(key, value)
-
-    def items(self):
-        return [(key, value) for node, key, value in self]
 
     def append(self, key, value):
         tail = self.root.prev if self.root.prev is not self.root else self.root

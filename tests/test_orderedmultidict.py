@@ -125,7 +125,7 @@ class TestOmdict(unittest.TestCase):
         for init in self.inits:
             omd = omdict(init)
             for key, value in init.items():
-                assert omd.has_key(key)
+                assert key in omd
 
     def test_update(self):
         # Some manual tests.
@@ -292,7 +292,7 @@ class TestOmdict(unittest.TestCase):
             # to None.
             omd = omdict(init)
             assert omd.add(_unique) == omd
-            assert _unique in omd and omd[_unique] == None
+            assert _unique in omd and omd[_unique] is None
 
     def test_addlist(self):
         for init in self.inits:
@@ -675,13 +675,13 @@ class TestOmdict(unittest.TestCase):
         # __contains__(), has_key(), get(), and setdefault().
         for dkey, omdkey in izip(d, omd):
             assert dkey == omdkey and dkey in d and omdkey in omd
-            assert d.has_key(dkey) and omd.has_key(omdkey)
+            assert dkey in d and omdkey in omd
             assert d.get(dkey) == omd.get(omdkey)
             d.setdefault(dkey, _unique)
             omd.setdefault(omdkey, _unique)
             assert d.get(dkey) == omd.get(omdkey) and d.get(dkey) != _unique
         for nonkey in self.nonkeys:
-            assert d.get(nonkey) == omd.get(nonkey) == None
+            assert d.get(nonkey) == omd.get(nonkey) is None
             d.setdefault(nonkey, _unique)
             omd.setdefault(nonkey, _unique)
             assert d.get(nonkey) == omd.get(nonkey) == _unique
