@@ -5,7 +5,8 @@ from os.path import dirname, join as pjoin
 from setuptools import setup, find_packages
 
 with open(pjoin(dirname(__file__), 'orderedmultidict', '__init__.py')) as fd:
-    VERSION = re.compile(r".*__version__ = '(.*?)'", re.S).match(fd.read()).group(1)
+    VERSION = re.compile(
+        r".*__version__ = '(.*?)'", re.S).match(fd.read()).group(1)
 
 if sys.argv[-1] == 'publish':
     """
