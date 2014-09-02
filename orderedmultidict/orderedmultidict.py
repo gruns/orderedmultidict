@@ -8,6 +8,7 @@
 # License: Build Amazing Things (Unlicense)
 from __future__ import absolute_import
 
+import six
 try:
     from collections import OrderedDict as odict
 except ImportError:
@@ -205,7 +206,7 @@ class omdict(object):
                                    replacements, leftovers)
 
         # First, replace existing values for each key.
-        for key, values in replacements.iteritems():
+        for key, values in six.iteritems(replacements):
             self.setlist(key, values)
         # Then, add the leftover items to the end of the list of all items.
         for key, value in leftovers:
@@ -515,7 +516,7 @@ class omdict(object):
             key = node.key
             return key, self.popvalue(key, last=last)
         else:
-            key = self._map.keys()[-1 if last else 0]
+            key = list(self._map.keys())[-1 if last else 0]
             return key, self.pop(key)
 
     def poplistitem(self, last=True):
@@ -597,10 +598,10 @@ class omdict(object):
             if key in self:
                 return iter([(node.key, node.value) for node in self._map[key]])
             raise KeyError(key)
-        return ((key, nodes[0].value) for (key, nodes) in self._map.iteritems())
+        return ((key, nodes[0].value) for (key, nodes) in six.iteritems(self._map))
 
     def iterkeys(self):
-        return self._map.iterkeys()
+        return six.iterkeys(self._map)
 
     def itervalues(self, key=_absent):
         """
@@ -622,7 +623,7 @@ class omdict(object):
             if key in self:
                 return iter([node.value for node in self._map[key]])
             raise KeyError(key)
-        return iter([nodes[0].value for nodes in self._map.itervalues()])
+        return iter([nodes[0].value for nodes in six.itervalues(self._map)])
 
     def allitems(self, key=_absent):
         '''
@@ -725,7 +726,7 @@ class omdict(object):
 
         Returns: <self>.
         """
-        for key in self._map.iterkeys():
+        for key in six.iterkeys(self._map):
             self._map[key].reverse()
         self._items.reverse()
         return self

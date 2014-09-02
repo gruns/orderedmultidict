@@ -8,6 +8,7 @@
 # License: Build Amazing Things (Unlicense)
 from __future__ import absolute_import
 
+import six
 import unittest
 try:
     from collections import OrderedDict as odict  # Python 2.7+.
@@ -93,17 +94,17 @@ class TestOmdict(unittest.TestCase):
     def test_init(self):
         for init in self.inits:
             omd = omdict(init)
-            assert omd.allitems() == init.items()
+            assert omd.allitems() == list(init.items())
 
             omd1 = omdict(init)
             omd2 = omdict(omd1)
-            assert omd1.allitems() == omd2.allitems()
+            assert omd1.allitems() == list(omd2.allitems())
 
     def test_load(self):
         omd = omdict()
         for init in self.inits:
             assert omd.load(init) == omd
-            assert omd.allitems() == init.items()
+            assert omd.allitems() == list(init.items())
 
     def test_copy(self):
         for init in self.inits:
@@ -196,7 +197,7 @@ class TestOmdict(unittest.TestCase):
 
                 # Verification.
                 if update or keyword_update:
-                    for key, value in update.iteritems():
+                    for key, value in six.iteritems(update):
                         assert key in omd1 and key in omd3
                         assert value in omd1.getlist(
                             key) and value in omd3.getlist(key)
@@ -504,9 +505,9 @@ class TestOmdict(unittest.TestCase):
             omd = omdict(init.items())
 
             # Testing items(), keys(), values(), lists(), and listitems().
-            assert omd.items() == dic.items()
-            assert omd.keys() == dic.keys()
-            assert omd.values() == dic.values()
+            assert omd.items() == list(dic.items())
+            assert omd.keys() == list(dic.keys())
+            assert omd.values() == list(dic.values())
             iterator = zip(omd.keys(), omd.lists(), omd.listitems())
             for key, valuelist, listitem in iterator:
                 assert omd.values(key) == omd.getlist(key) == valuelist
@@ -515,13 +516,13 @@ class TestOmdict(unittest.TestCase):
                 assert listitem == (key, valuelist)
 
             # Testing iteritems(), iterkeys(), itervalues(), and iterlists().
-            for key1, key2 in zip(omd.iterkeys(), dic.iterkeys()):
+            for key1, key2 in zip(omd.iterkeys(), six.iterkeys(dic)):
                 assert key1 == key2
-            for val1, val2 in zip(omd.itervalues(), dic.itervalues()):
+            for val1, val2 in zip(omd.itervalues(), six.itervalues(dic)):
                 assert val1 == val2
-            for item1, item2 in zip(omd.iteritems(), dic.iteritems()):
+            for item1, item2 in zip(omd.iteritems(), six.iteritems(dic)):
                 assert item1 == item2
-            for key, values in zip(omd.iterkeys(), omd.iterlists()):
+            for key, values in zip(six.iterkeys(omd), omd.iterlists()):
                 assert omd.getlist(key) == values
             iterator = zip(
                 omd.iterkeys(), omd.iterlists(), omd.iterlistitems())
@@ -549,7 +550,7 @@ class TestOmdict(unittest.TestCase):
             values = [value for key, value in init.items()]
 
             # Test allitems(), allkeys(), allvalues().
-            assert omd.allitems() == init.items()
+            assert omd.allitems() == list(init.items())
             assert omd.allkeys() == keys
             assert omd.allvalues() == values
 
@@ -576,12 +577,14 @@ class TestOmdict(unittest.TestCase):
 
     def test_reverse(self):
         for init in self.inits:
-            assert omdict(init).reverse().allitems() == init.items()[::-1]
+            assert omdict(init).reverse().allitems() == list(init.items())[::-1]
 
     def test_eq(self):
         for init in self.inits:
-            d, omd = dict(init), omdict(init)
-            assert d == omd and omd == omd and omd == omd.copy()
+            d, omd = dict(init), dict(omdict(init))
+            assert d == omd
+            assert omd == omd
+            assert omd == omd.copy()
 
     def test_ne(self):
         diff = omdict([(_unique, _unique)])
@@ -668,8 +671,7 @@ class TestOmdict(unittest.TestCase):
             self._compare_odict_and_omddict(d, omd)
 
             assert dict().update(init) == omdict().update(init)  # update().
-            assert d.fromkeys(init).items() == omd.fromkeys(
-                init).items()  # fromkeys()
+            assert list(d.fromkeys(init).items()) == list(omd.fromkeys(init).items())  # fromkeys()
 
     def _compare_odict_and_omddict(self, d, omd):
         assert len(d) == len(omd)  # __len__().
@@ -692,8 +694,8 @@ class TestOmdict(unittest.TestCase):
         iterators = [
             zip(d.items(), omd.items(), d.keys(), omd.keys(),
                 d.values(), omd.values()),
-            zip(d.iteritems(), omd.iteritems(), d.iterkeys(), omd.iterkeys(),
-                d.itervalues(), omd.itervalues())]
+            zip(six.iteritems(d), six.iteritems(omd), six.iterkeys(d), six.iterkeys(omd),
+                six.itervalues(d), six.itervalues(omd))]
         for iterator in iterators:
             for ditem, omditem, dkey, omdkey, dvalue, omdvalue in iterator:
                 assert ditem == omditem and dkey == omdkey and dvalue == omdvalue
@@ -701,14 +703,14 @@ class TestOmdict(unittest.TestCase):
         # pop().
         dcopy, omdcopy = d.copy(), omd.copy()
         while dcopy and omdcopy:
-            assert dcopy.pop(dcopy.keys()[0]) == omdcopy.pop(omdcopy.keys()[0])
+            assert dcopy.pop(list(dcopy.keys())[0]) == omdcopy.pop(list(omdcopy.keys())[0])
         # popitem().
         dcopy, omdcopy = d.copy(), omd.copy()
         while dcopy and omdcopy:
             assert dcopy.popitem() == omdcopy.popitem()
 
         # __getitem__().
-        for dkey, omdkey in zip(d.iterkeys(), omd.iterkeys()):
+        for dkey, omdkey in zip(six.iterkeys(d), six.iterkeys(omd)):
             assert d[dkey] == omd[omdkey]
         # __setitem__().
         for dkey, omdkey in zip(d, omd):
@@ -717,7 +719,7 @@ class TestOmdict(unittest.TestCase):
             assert dkey == omdkey and d[dkey] == omd[omdkey]
         # __delitem__().
         while d and omd:
-            dkey, omdkey = d.keys()[0], omd.keys()[0]
+            dkey, omdkey = list(d.keys())[0], list(omd.keys())[0]
             del d[dkey]
             del omd[omdkey]
             assert dkey == omdkey and dkey not in d and omdkey not in omd
