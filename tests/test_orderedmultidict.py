@@ -8,16 +8,17 @@
 # License: Build Amazing Things (Unlicense)
 from __future__ import absolute_import
 
-import six
 import unittest
+from itertools import product, repeat
+
+import six
+from orderedmultidict.orderedmultidict import omdict
+from six.moves import map, zip, zip_longest
+
 try:
     from collections import OrderedDict as odict  # Python 2.7+.
 except ImportError:
     from ordereddict import OrderedDict as odict  # Python 2.4-2.6.
-from itertools import repeat, product
-from six.moves import map, zip, zip_longest
-
-from orderedmultidict.orderedmultidict import omdict
 
 _unique = object()
 

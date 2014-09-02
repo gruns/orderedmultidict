@@ -8,15 +8,17 @@
 # License: Build Amazing Things (Unlicense)
 from __future__ import absolute_import
 
+from itertools import chain
+
 import six
+from six.moves import map, zip_longest
+
+from .itemlist import itemlist
+
 try:
     from collections import OrderedDict as odict
 except ImportError:
     from ordereddict import OrderedDict as odict
-from six.moves import map, zip_longest
-from itertools import chain
-
-from .itemlist import itemlist
 
 _absent = object()  # Marker that means no parameter was provided.
 
