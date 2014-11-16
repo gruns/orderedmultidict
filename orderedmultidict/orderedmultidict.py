@@ -20,6 +20,9 @@ try:
 except ImportError:
     from ordereddict import OrderedDict as odict
 
+import sys
+items_attr = 'items' if sys.version_info[0] >= 3 else 'iteritems'
+
 _absent = object()  # Marker that means no parameter was provided.
 
 #
@@ -739,13 +742,13 @@ class omdict(object):
             for item1, item2 in zip_longest(myiter, otheriter, fillvalue=_absent):
                 if item1 != item2 or item1 is _absent or item2 is _absent:
                     return False
-        elif not hasattr(other, '__len__') or not hasattr(other, 'iteritems'):
+        elif not hasattr(other, '__len__') or not hasattr(other, items_attr):
             return False
         # Ignore order so we can compare ordered omdicts with unordered dicts.
         else:
             if len(self) != len(other):
                 return False
-            for key, value in other.iteritems():
+            for key, value in six.iteritems(other):
                 if self.get(key, _absent) != value:
                     return False
         return True

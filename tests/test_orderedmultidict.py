@@ -582,7 +582,7 @@ class TestOmdict(unittest.TestCase):
 
     def test_eq(self):
         for init in self.inits:
-            d, omd = dict(init), dict(omdict(init))
+            d, omd = dict(init), omdict(init)
             assert d == omd
             assert omd == omd
             assert omd == omd.copy()
