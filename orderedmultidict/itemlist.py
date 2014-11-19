@@ -32,9 +32,9 @@ class itemlist(object):
     """
     Doubly linked list of itemnodes.
 
-    This class is used as the key:value item storage of orderedmultidict. Methods
-    below were only added as needed for use with orderedmultidict, so some
-    otherwise common list related methods may be missing.
+    This class is used as the key:value item storage of orderedmultidict.
+    Methods below were only added as needed for use with orderedmultidict, so
+    some otherwise common list related methods may be missing.
     """
 
     def __init__(self, items=[]):
@@ -97,10 +97,10 @@ class itemlist(object):
     def __iter__(self):
         current = self.root.next
         while current and current is not self.root:
-            # Record current.next here in case current.next changes after the yield
-            # and before we return for the next iteration. For example, methods like
-            # reverse() will change current.next() before yield gets executed
-            # again.
+            # Record current.next here in case current.next changes after the
+            # yield and before we return for the next iteration. For example,
+            # methods like reverse() will change current.next() before yield
+            # gets executed again.
             nextnode = current.next
             yield current, current.key, current.value
             current = nextnode
@@ -121,14 +121,14 @@ class itemlist(object):
 
         if node is not _absent or (key is not _absent and value is not _absent):
             for selfnode, selfkey, selfvalue in self:
-                if ((node is _absent and key == selfkey and value == selfvalue) or
-                        (node is not _absent and node == selfnode)):
+                if ((node is _absent and key == selfkey and value == selfvalue)
+                    or (node is not _absent and node == selfnode)):
                     return True
         return False
 
     def __getitem__(self, index):
-        # Only support direct access to the first or last element, as this is all
-        # orderedmultidict needs for now.
+        # Only support direct access to the first or last element, as this is
+        # all orderedmultidict needs for now.
         if index == 0 and self.root.next is not self.root:
             return self.root.next
         elif index == -1 and self.root.prev is not self.root:

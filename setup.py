@@ -9,9 +9,7 @@ with open(pjoin(dirname(__file__), 'orderedmultidict', '__init__.py')) as fd:
         r".*__version__ = '(.*?)'", re.S).match(fd.read()).group(1)
 
 if sys.argv[-1] == 'publish':
-    """
-    Publish to PyPi.
-    """
+    """Publish to PyPi."""
     os.system('python setup.py sdist upload')
     sys.exit()
 
@@ -41,11 +39,17 @@ setup(name='orderedmultidict',
       platforms=['any'],
       classifiers=['Topic :: Software Development :: Libraries',
                    'Natural Language :: English',
-                   'Development Status :: 4 - Beta',
+                   'Development Status :: 5 - Production/Stable',
                    'Intended Audience :: Developers',
                    'License :: Freely Distributable',
                    'Programming Language :: Python :: 2.6',
                    'Programming Language :: Python :: 2.7',
+                   'Programming Language :: Python :: 3',
+                   'Programming Language :: Python :: 3.0',
+                   'Programming Language :: Python :: 3.1',
+                   'Programming Language :: Python :: 3.2',
+                   'Programming Language :: Python :: 3.3',
+                   'Programming Language :: Python :: 3.4',
                    ],
       install_requires=required,
       test_suite='tests',

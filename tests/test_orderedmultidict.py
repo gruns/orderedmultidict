@@ -12,8 +12,9 @@ import unittest
 from itertools import product, repeat
 
 import six
-from orderedmultidict.orderedmultidict import omdict
 from six.moves import map, zip, zip_longest
+
+from orderedmultidict.orderedmultidict import omdict
 
 try:
     from collections import OrderedDict as odict  # Python 2.7+.
@@ -142,13 +143,14 @@ class TestOmdict(unittest.TestCase):
         assert omd.allitems() == [(1, None), (2, None), (3, None)]
 
         for init in self.inits:
-            for update, keyword_update in zip(self.updates, self.keyword_updates):
+            zipped = zip(self.updates, self.keyword_updates)
+            for update, keyword_update in zipped:
                 omd1, omd2, omd3 = omdict(init), omdict(init), omdict(init)
                 oldomd = omd1.copy()
-                # Reduce the update to just the final items that will be present post
-                # update(), where repeated keys will be reduced to their last occurring
-                # value. For example, [(7,7),(7,8)] would be reduced to
-                # [(7,8)].
+                # Reduce the update to just the final items that will be present
+                # post update(), where repeated keys will be reduced to their
+                # last occurring value. For example, [(7,7),(7,8)] would be
+                # reduced to [(7,8)].
                 reduced = [
                     i for i in update.items() if i in odict(update).items()]
 
@@ -185,7 +187,8 @@ class TestOmdict(unittest.TestCase):
             (1, None), (1, None), (2, None), (3, 3), (1, None)]
 
         for init in self.inits:
-            for update, keyword_update in zip(self.updates, self.keyword_updates):
+            zipped = zip(self.updates, self.keyword_updates)
+            for update, keyword_update in zipped:
                 omd1, omd2, omd3 = omdict(init), omdict(init), omdict(init)
                 oldomd = omd1.copy()
 
@@ -276,8 +279,8 @@ class TestOmdict(unittest.TestCase):
                 assert omd.getlist(key)[-1] == value
                 assert omd.allitems()[-1] == (key, value)
 
-            # Repeat the add() calls with the same items and make sure the old items
-            # aren't replaced.
+            # Repeat the add() calls with the same items and make sure the old
+            # items aren't replaced.
             oldomd = omd.copy()
             for key, value in self.nonitems:
                 assert (key, value) in omd.allitems()
@@ -286,14 +289,14 @@ class TestOmdict(unittest.TestCase):
                 assert omd.getlist(key)[-1] == value
                 assert omd.allitems()[-1] == (key, value)
 
-            # Assert that containers are valid values, too, not just immutables like
-            # integers.
+            # Assert that containers are valid values, too, not just immutables
+            # like integers.
             assert omd.add(_unique, self.updates) == omd
             assert omd.getlist(_unique)[-1] == self.updates
             assert omd.allitems()[-1] == (_unique, self.updates)
 
-            # Add() doesn't require a value, and when one isn't provided it defaults
-            # to None.
+            # Add() doesn't require a value, and when one isn't provided it
+            # defaults to None.
             omd = omdict(init)
             assert omd.add(_unique) == omd
             assert _unique in omd and omd[_unique] is None
@@ -308,15 +311,15 @@ class TestOmdict(unittest.TestCase):
                 assert (omd.allitems()[-1 * len(self.valuelist):] ==
                         list(zip(repeat(nonkey), self.valuelist)))
 
-            # Repeat the addlist() calls with the same items and make sure the old
-            # items aren't replaced.
+            # Repeat the addlist() calls with the same items and make sure the
+            # old items aren't replaced.
             oldomd = omd.copy()
             for nonkey in self.nonkeys:
                 for value in self.valuelist:
                     assert (nonkey, value) in omd.allitems()
                 assert omd.addlist(nonkey, self.valuelist) == omd
-                assert len(omd.getlist(nonkey)) == (len(oldomd.getlist(nonkey)) +
-                                                    len(self.valuelist))
+                assert len(omd.getlist(nonkey)) == (
+                    len(oldomd.getlist(nonkey)) + len(self.valuelist))
                 assert omd.getlist(nonkey) == oldomd.getlist(
                     nonkey) + self.valuelist
                 assert (omd.allitems()[-1 * len(self.valuelist):] ==
@@ -353,27 +356,28 @@ class TestOmdict(unittest.TestCase):
     def test_removevalues(self):
         for init in self.inits:
             omd = omdict(init)
+            removevals = omd.removevalues  # Shorten to linewrap for PEP 8.
             for nonkey in self.nonkeys:
                 obj = object()
                 values = [1, 1.1, '1.1', (), [], {}, obj, 5.5, '1.1']
 
-                assert omd.removevalues(nonkey, []).getlist(nonkey) == []
-                assert omd.removevalues(nonkey, values).getlist(nonkey) == []
+                assert removevals(nonkey, []).getlist(nonkey) == []
+                assert removevals(nonkey, values).getlist(nonkey) == []
 
                 omd.addlist(nonkey, values).removevalues(nonkey, [])
                 assert omd.getlist(nonkey) == values
-                assert omd.removevalues(nonkey, values).getlist(nonkey) == []
+                assert removevals(nonkey, values).getlist(nonkey) == []
 
                 omd.addlist(nonkey, values)
-                assert (omd.removevalues(nonkey, [1]).getlist(nonkey) ==
+                assert (removevals(nonkey, [1]).getlist(nonkey) ==
                         [1.1, '1.1', (), [], {}, obj, 5.5, '1.1'])
-                assert (omd.removevalues(nonkey, ['1.1', obj]).getlist(nonkey) ==
+                assert (removevals(nonkey, ['1.1', obj]).getlist(nonkey) ==
                         [1.1, (), [], {}, 5.5])
-                assert (omd.removevalues(nonkey, [[], 5.5, ()]).getlist(nonkey) ==
+                assert (removevals(nonkey, [[], 5.5, ()]).getlist(nonkey) ==
                         [1.1, {}])
-                assert omd.removevalues(nonkey, [{}]).getlist(nonkey) == [1.1]
-                assert omd.removevalues(nonkey, [1.1]).getlist(nonkey) == []
-                assert omd.removevalues(
+                assert removevals(nonkey, [{}]).getlist(nonkey) == [1.1]
+                assert removevals(nonkey, [1.1]).getlist(nonkey) == []
+                assert removevals(
                     nonkey, [9, 9.9, 'nope']).getlist(nonkey) == []
 
     def test_pop(self):
@@ -498,8 +502,8 @@ class TestOmdict(unittest.TestCase):
                 self.assertRaises(KeyError, omd.poplistitem)
 
     # Tests every non-'all' items, keys, values, lists method: items(), keys(),
-    # values(), lists(), listitems() and their iterators iteritems(), iterkeys(),
-    # itervalues(), iterlists(), and iterlistitems().
+    # values(), lists(), listitems() and their iterators iteritems(),
+    # iterkeys(), itervalues(), iterlists(), and iterlistitems().
     def test_nonall_item_key_value_lists(self):
         for init in self.inits:
             dic = odict(init.items())
@@ -563,8 +567,8 @@ class TestOmdict(unittest.TestCase):
             for item1, item2 in zip(omd.iterallitems(), init.items()):
                 assert item1 == item2
 
-            # Test allitems(), allvalues(), iterallitems() and iterallvalues() with a
-            # key.
+            # Test allitems(), allvalues(), iterallitems() and iterallvalues()
+            # with a key.
             for key in omd.iterkeys():
                 assert (omd.allvalues(key) == list(omd.iterallvalues(key)) ==
                         omd.getlist(key))
@@ -578,7 +582,8 @@ class TestOmdict(unittest.TestCase):
 
     def test_reverse(self):
         for init in self.inits:
-            assert omdict(init).reverse().allitems() == list(init.items())[::-1]
+            reversed = list(init.items())[::-1]
+            assert omdict(init).reverse().allitems() == reversed
 
     def test_eq(self):
         for init in self.inits:
@@ -672,7 +677,9 @@ class TestOmdict(unittest.TestCase):
             self._compare_odict_and_omddict(d, omd)
 
             assert dict().update(init) == omdict().update(init)  # update().
-            assert list(d.fromkeys(init).items()) == list(omd.fromkeys(init).items())  # fromkeys()
+            dict_fromkeys = list(d.fromkeys(init).items())
+            omdict_fromkeys = list(omd.fromkeys(init).items())
+            assert dict_fromkeys == omdict_fromkeys  # fromkeys()
 
     def _compare_odict_and_omddict(self, d, omd):
         assert len(d) == len(omd)  # __len__().
@@ -695,16 +702,20 @@ class TestOmdict(unittest.TestCase):
         iterators = [
             zip(d.items(), omd.items(), d.keys(), omd.keys(),
                 d.values(), omd.values()),
-            zip(six.iteritems(d), six.iteritems(omd), six.iterkeys(d), six.iterkeys(omd),
-                six.itervalues(d), six.itervalues(omd))]
+            zip(six.iteritems(d), six.iteritems(omd), six.iterkeys(d),
+                six.iterkeys(omd), six.itervalues(d), six.itervalues(omd))]
         for iterator in iterators:
             for ditem, omditem, dkey, omdkey, dvalue, omdvalue in iterator:
-                assert ditem == omditem and dkey == omdkey and dvalue == omdvalue
+                assert dkey == omdkey
+                assert ditem == omditem
+                assert dvalue == omdvalue
 
         # pop().
         dcopy, omdcopy = d.copy(), omd.copy()
         while dcopy and omdcopy:
-            assert dcopy.pop(list(dcopy.keys())[0]) == omdcopy.pop(list(omdcopy.keys())[0])
+            dpop = dcopy.pop(list(dcopy.keys())[0])
+            omdpop = omdcopy.pop(list(omdcopy.keys())[0])
+            assert dpop == omdpop
         # popitem().
         dcopy, omdcopy = d.copy(), omd.copy()
         while dcopy and omdcopy:
@@ -798,8 +809,8 @@ class TestOmdict(unittest.TestCase):
 class TestUtilities(unittest.TestCase):
 
     def test_rfind(self):
-        tests = [([], 1, -1), ([1], 1, 0), ([1, 2], 2, 1), ([1, 2, 1, 2], 1, 2),
-                 ([1, 2, 3], 4, -1), ([1, 2, 3], 1, 0)]
+        tests = [([], 1, -1), ([1], 1, 0), ([1, 2], 2, 1),
+                 ([1, 2, 1, 2], 1, 2), ([1, 2, 3], 4, -1), ([1, 2, 3], 1, 0)]
         for lst, item, pos in tests:
             assert _rfind(lst, item) == pos
 
