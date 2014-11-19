@@ -22,7 +22,7 @@ omdict retains method parity with dict.
 
 Information and documentation at https://github.com/gruns/orderedmultidict.''')
 
-required = ['six']
+required = ['six==1.8.0']
 if sys.version_info < (2, 7):
     required.append('ordereddict')
 
