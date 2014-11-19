@@ -10,8 +10,9 @@ from __future__ import absolute_import
 
 import unittest
 
-from orderedmultidict.itemlist import itemlist
 from six.moves import zip
+
+from orderedmultidict.itemlist import itemlist
 
 _unique = object()
 
