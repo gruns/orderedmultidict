@@ -347,7 +347,7 @@ class TestOmdict(unittest.TestCase):
                 assert nonkey not in omd
                 omd.setlist(nonkey, [])
                 assert nonkey not in omd
-            for key in omd.iterkeys():
+            for key in omd.keys():
                 assert key in omd
                 omd.setlist(key, [])
                 assert key not in omd
