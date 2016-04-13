@@ -1,6 +1,6 @@
 # orderedmultidict
 
-### omdict is an ordered multivalue dictionary that retains method parity with [dict](http://docs.python.org/library/stdtypes.html#dict).
+### omdict is an ordered multivalue dictionary that retains method parity with Python's [dict](http://docs.python.org/library/stdtypes.html#dict).
 
 A multivalue dictionary is a dictionary that can store multiple values per
 key. An ordered multivalue dictionary is a multivalue dictionary that retains
