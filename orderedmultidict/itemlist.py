@@ -34,7 +34,7 @@ class itemlist(object):
 
     This class is used as the key:value item storage of orderedmultidict.
     Methods below were only added as needed for use with orderedmultidict, so
-    some otherwise common list related methods may be missing.
+    some otherwise common list methods may be missing.
     """
 
     def __init__(self, items=[]):
