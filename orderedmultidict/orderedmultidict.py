@@ -25,6 +25,9 @@ items_attr = 'items' if sys.version_info[0] >= 3 else 'iteritems'
 
 _absent = object()  # Marker that means no parameter was provided.
 
+def callable_attr(obj, attr):
+    return hasattr(obj, attr) and callable(getattr(obj, attr))
+
 #
 # TODO(grun): Create a subclass of list that values(), getlist(), allitems(),
 # etc return that the user can manipulate directly to control the omdict()
@@ -247,13 +250,13 @@ class omdict(dict):
     def _items_iterator(self, container):
         cont = container
         iterator = iter(cont)
-        if hasattr(cont, 'iterallitems') and callable(cont.iterallitems):
+        if callable_attr(cont, 'iterallitems'):
             iterator = cont.iterallitems()
-        elif hasattr(cont, 'allitems') and callable(cont.allitems):
+        elif callable_attr(cont, 'allitems'):
             iterator = iter(cont.allitems())
-        elif hasattr(cont, 'iteritems') and callable(cont.iteritems):
+        elif callable_attr(cont, 'iteritems'):
             iterator = cont.iteritems()
-        elif hasattr(cont, 'items') and callable(cont.items):
+        elif callable_attr(cont, 'items'):
             iterator = iter(cont.items())
         return iterator
 
@@ -751,7 +754,7 @@ class omdict(dict):
         return self
 
     def __eq__(self, other):
-        if hasattr(other, 'iterallitems') and callable(other.iterallitems):
+        if callable_attr(other, 'iterallitems'):
             myiter, otheriter = self.iterallitems(), other.iterallitems()
             for i1, i2 in zip_longest(myiter, otheriter, fillvalue=_absent):
                 if i1 != i2 or i1 is _absent or i2 is _absent:
