@@ -119,10 +119,10 @@ class itemlist(object):
         else:
             node = item
 
-        if node is not _absent or (key is not _absent and value is not _absent):
+        if node is not _absent or _absent not in [key, value]:
             for selfnode, selfkey, selfvalue in self:
                 if ((node is _absent and key == selfkey and value == selfvalue)
-                    or (node is not _absent and node == selfnode)):
+                   or (node is not _absent and node == selfnode)):
                     return True
         return False
 

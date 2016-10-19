@@ -96,8 +96,8 @@ class omdict(dict):
 
     Standard dict methods interact with the first value associated with a given
     key. This means that omdict retains method parity with dict, and a dict
-    object can be replaced with an omdict object and all interaction will behave
-    identically. All dict methods that retain parity with omdict are:
+    object can be replaced with an omdict object and all interaction will
+    behave identically. All dict methods that retain parity with omdict are:
 
       get(), setdefault(), pop(), popitem(),
       clear(), copy(), update(), fromkeys(), len()
@@ -112,8 +112,8 @@ class omdict(dict):
 
     New methods have also been added to omdict. Methods with 'list' in their
     name interact with lists of values, and methods with 'all' in their name
-    interact with all items in the dictionary, including multiple items with the
-    same key.
+    interact with all items in the dictionary, including multiple items with
+    the same key.
 
     The new omdict methods are:
 
@@ -121,7 +121,8 @@ class omdict(dict):
       getlist(), add(), addlist(), set(), setlist(), setdefaultlist(),
       poplist(), popvalue(), popvalues(), popitem(), poplistitem(),
       allitems(), allkeys(), allvalues(), lists(), listitems(),
-      iterallitems(), iterallkeys(), iterallvalues(), iterlists(), iterlistitems()
+      iterallitems(), iterallkeys(), iterallvalues(), iterlists(),
+        iterlistitems()
 
     Explanations and examples of the new methods above can be found in the
     function comments below and online at
@@ -146,8 +147,8 @@ class omdict(dict):
     def load(self, *args, **kwargs):
         """
         Clear all existing key:value items and import all key:value items from
-        <mapping>. If multiple values exist for the same key in <mapping>, they are
-        all be imported.
+        <mapping>. If multiple values exist for the same key in <mapping>, they
+        are all be imported.
 
         Example:
           omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
@@ -190,8 +191,9 @@ class omdict(dict):
 
     def updateall(self, *args, **kwargs):
         """
-        Update this dictionary with the items from <mapping>, replacing existing
-        key:value items with shared keys before adding new key:value items.
+        Update this dictionary with the items from <mapping>, replacing
+        existing key:value items with shared keys before adding new key:value
+        items.
 
         Example:
           omd = omdict([(1,1), (2,2)])
@@ -263,7 +265,8 @@ class omdict(dict):
     def getlist(self, key, default=[]):
         """
         Returns: The list of values for <key> if <key> is in the dictionary,
-        else <default>. If <default> is not provided, an empty list is returned.
+        else <default>. If <default> is not provided, an empty list is
+        returned.
         """
         if key in self:
             return [node.value for node in self._map[key]]
@@ -381,8 +384,8 @@ class omdict(dict):
 
     def removevalues(self, key, values):
         """
-        Removes all <values> from the values of <key>. If <key> has no remaining
-        values after removevalues(), the key is popped.
+        Removes all <values> from the values of <key>. If <key> has no
+        remaining values after removevalues(), the key is popped.
 
         Example:
           omd = omdict([(1, 1), (1, 11), (1, 1), (1, 111)])
@@ -440,8 +443,8 @@ class omdict(dict):
         If <key> no longer has any values after a popvalue() call, <key> is
         removed from the dictionary. If <key> isn't in the dictionary and
         <default> was provided, return default. KeyError is raised if <default>
-        is not provided and <key> is not in the dictionary. ValueError is raised
-        if <value> is provided but isn't a value for <key>.
+        is not provided and <key> is not in the dictionary. ValueError is
+        raised if <value> is provided but isn't a value for <key>.
 
         Example:
           omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3), (2,22)])
@@ -497,8 +500,8 @@ class omdict(dict):
         same key are removed.
 
         If <fromall> is True, allitems()[0] is popped if <last> is False or
-        allitems()[-1] is popped if <last> is True. Any remaining items with the
-        same key remain.
+        allitems()[-1] is popped if <last> is True. Any remaining items with
+        the same key remain.
 
         Example:
           omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
@@ -572,8 +575,9 @@ class omdict(dict):
     def values(self, key=_absent):
         """
         Raises: KeyError if <key> is provided and not in the dictionary.
-        Returns: List created from itervalues(<key>).If <key> is provided and is
-          a dictionary key, only values of items with key <key> are returned.
+        Returns: List created from itervalues(<key>).If <key> is provided and
+          is a dictionary key, only values of items with key <key> are
+          returned.
         """
         if key is not _absent and key in self._map:
             return self.getlist(key)

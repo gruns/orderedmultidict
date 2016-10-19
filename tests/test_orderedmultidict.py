@@ -105,8 +105,8 @@ class TestOmdict(unittest.TestCase):
         # Support both *args and **kwargs dictionary initialization.
         items = [('sape', 4139), ('guido', 4127), ('jack', 4098)]
         assert omdict(items).allitems() == items
-        omd = omdict(sape=4139, guido=4127, jack=4098)
-        assert set(omd.allitems()) == set(items) # Keyword order isn't preserved.
+        omd_item_set = set(omdict(sape=4139, guido=4127, jack=4098).items())
+        assert omd_item_set == set(items)  # Keyword order isn't preserved.
 
     def test_load(self):
         omd = omdict()
@@ -153,10 +153,10 @@ class TestOmdict(unittest.TestCase):
             for update, keyword_update in zipped:
                 omd1, omd2, omd3 = omdict(init), omdict(init), omdict(init)
                 oldomd = omd1.copy()
-                # Reduce the update to just the final items that will be present
-                # post update(), where repeated keys will be reduced to their
-                # last occurring value. For example, [(7,7),(7,8)] would be
-                # reduced to [(7,8)].
+                # Reduce the update to just the final items that will be
+                # present post update(), where repeated keys will be reduced to
+                # their last occurring value. For example, [(7,7),(7,8)] would
+                # be reduced to [(7,8)].
                 reduced = [
                     i for i in update.items() if i in odict(update).items()]
 
