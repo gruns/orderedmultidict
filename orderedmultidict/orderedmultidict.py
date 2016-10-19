@@ -81,7 +81,7 @@ _absent = object()  # Marker that means no parameter was provided.
 #
 
 
-class omdict(object):
+class omdict(dict):
 
     """
     Ordered Multivalue Dictionary.
@@ -132,7 +132,7 @@ class omdict(object):
     above url.
     """
 
-    def __init__(self, mapping=[]):
+    def __init__(self, *args, **kwargs):
         # Doubly linked list of itemnodes, each itemnode storing a key:value
         # item.
         self._items = itemlist()
@@ -141,9 +141,9 @@ class omdict(object):
         # reference points to one of that keys values.
         self._map = odict()
 
-        self.load(mapping)
+        self.load(*args, **kwargs)
 
-    def load(self, mapping=[]):
+    def load(self, *args, **kwargs):
         """
         Clear all existing key:value items and import all key:value items from
         <mapping>. If multiple values exist for the same key in <mapping>, they are
@@ -157,11 +157,11 @@ class omdict(object):
         Returns: <self>.
         """
         self.clear()
-        self.updateall(mapping)
+        self.updateall(*args, **kwargs)
         return self
 
     def copy(self):
-        return self.__class__(self._items)
+        return self.__class__(self.allitems())
 
     def clear(self):
         self._map.clear()

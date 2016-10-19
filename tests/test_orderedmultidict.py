@@ -102,6 +102,12 @@ class TestOmdict(unittest.TestCase):
             omd2 = omdict(omd1)
             assert omd1.allitems() == list(omd2.allitems())
 
+        # Support both *args and **kwargs dictionary initialization.
+        items = [('sape', 4139), ('guido', 4127), ('jack', 4098)]
+        assert omdict(items).allitems() == items
+        omd = omdict(sape=4139, guido=4127, jack=4098)
+        assert set(omd.allitems()) == set(items) # Keyword order isn't preserved.
+
     def test_load(self):
         omd = omdict()
         for init in self.inits:
