@@ -30,6 +30,7 @@ _absent = object()  # Marker that means no parameter was provided.
 def callable_attr(obj, attr):
     return hasattr(obj, attr) and callable(getattr(obj, attr))
 
+
 #
 # TODO(grun): Create a subclass of list that values(), getlist(), allitems(),
 # etc return that the user can manipulate directly to control the omdict()
