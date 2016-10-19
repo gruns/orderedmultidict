@@ -26,6 +26,10 @@ required = ['six>=1.8.0']
 if sys.version_info < (2, 7):
     required.append('ordereddict')
 
+tests_require = ['pycodestyle']
+if sys.version_info[:2] < (2, 7):
+    tests_require += ['unittest2']
+
 setup(name='orderedmultidict',
       version=VERSION,
       author='Arthur Grunseid',
@@ -51,5 +55,5 @@ setup(name='orderedmultidict',
                    ],
       install_requires=required,
       test_suite='tests',
-      tests_require=[],
-      )
+      tests_require=tests_require,
+)
