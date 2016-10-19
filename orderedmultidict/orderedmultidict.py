@@ -16,9 +16,9 @@ from six.moves import map, zip_longest
 from .itemlist import itemlist
 
 try:
-    from collections import OrderedDict as odict
+    from collections import OrderedDict as odict  # Python 2.7 and later.
 except ImportError:
-    from ordereddict import OrderedDict as odict
+    from ordereddict import OrderedDict as odict  # Python 2.6 and earlier.
 
 import sys
 items_attr = 'items' if sys.version_info[0] >= 3 else 'iteritems'
