@@ -6,6 +6,7 @@
 # grunseid@gmail.com
 #
 # License: Build Amazing Things (Unlicense)
+
 from __future__ import absolute_import
 
 from itertools import chain
@@ -24,6 +25,7 @@ import sys
 items_attr = 'items' if sys.version_info[0] >= 3 else 'iteritems'
 
 _absent = object()  # Marker that means no parameter was provided.
+
 
 def callable_attr(obj, attr):
     return hasattr(obj, attr) and callable(getattr(obj, attr))
