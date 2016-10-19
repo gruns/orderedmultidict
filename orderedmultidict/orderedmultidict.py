@@ -140,7 +140,7 @@ class omdict(dict):
     """
 
     def __init__(self, *args, **kwargs):
-        # Doubly linked list of itemnodes, each itemnode storing a key:value
+        # Doubly linked list of itemnodes. Each itemnode stores a key:value
         # item.
         self._items = itemlist()
 
