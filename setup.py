@@ -9,8 +9,9 @@ with open(pjoin(dirname(__file__), 'orderedmultidict', '__init__.py')) as fd:
         r".*__version__ = '(.*?)'", re.S).match(fd.read()).group(1)
 
 if sys.argv[-1] == 'publish':
-    """Publish to PyPi."""
-    os.system('python setup.py sdist upload')
+    """Publish to PyPI with twine."""
+    os.system('python setup.py sdist')
+    os.system('twine upload dist/orderedmultidict-%s.tar.gz' % VERSION)
     sys.exit()
 
 long_description = ('''
