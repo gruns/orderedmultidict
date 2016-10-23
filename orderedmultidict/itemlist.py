@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #
 # omdict - Ordered Multivalue Dictionary.
 #
