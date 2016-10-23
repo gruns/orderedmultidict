@@ -812,6 +812,15 @@ class TestOmdict(unittest.TestCase):
         assert omd.popitem(fromall=True, last=False) == (1, 1)
         assert omd.allitems() == [(2, 2), (1, 1), (1, 2)]
 
+    def test_splats(self):
+        items = [('1', 1), ('2', 2), ('3', 3)]
+        omd = omdict(items)
+
+        def splat(*args, **kwargs):
+            return args, set(kwargs.items())
+
+        assert splat(*omd, **omd) == (tuple(i[0] for i in items), set(items))
+
 
 class TestUtilities(unittest.TestCase):
 

@@ -10,6 +10,7 @@
 from __future__ import absolute_import
 
 from itertools import chain
+from collections import MutableMapping
 
 import six
 from six.moves import map, zip_longest
@@ -87,7 +88,7 @@ def callable_attr(obj, attr):
 #
 
 
-class omdict(dict):
+class omdict(MutableMapping):
 
     """
     Ordered Multivalue Dictionary.
