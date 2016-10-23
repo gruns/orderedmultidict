@@ -12,7 +12,7 @@ from __future__ import absolute_import
 from .orderedmultidict import *  # noqa
 
 __title__ = 'orderedmultidict'
-__version__ = '0.7.7'
+__version__ = '0.7.8'
 __author__ = 'Arthur Grunseid'
 __contact__ = 'grunseid@gmail.com'
 __license__ = 'Unlicense'
