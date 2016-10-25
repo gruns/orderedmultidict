@@ -14,7 +14,7 @@ from __future__ import absolute_import
 from .orderedmultidict import *  # noqa
 
 __title__ = 'orderedmultidict'
-__version__ = '0.7.9'
+__version__ = '0.7.10'
 __author__ = 'Arthur Grunseid'
 __contact__ = 'grunseid@gmail.com'
 __license__ = 'Unlicense'
