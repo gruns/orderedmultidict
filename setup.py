@@ -6,6 +6,19 @@ import re
 import sys
 from os.path import dirname, join as pjoin
 from setuptools import setup, find_packages
+from setuptools.command.test import test as TestCommand
+
+
+class PyTest(TestCommand):
+    def initialize_options(self):
+        TestCommand.initialize_options(self)
+
+    def run_tests(self):
+        from unittest import TestLoader, TextTestRunner
+        suite = TestLoader().discover('./tests/')
+        result = TextTestRunner().run(suite)
+        sys.exit(0 if result.wasSuccessful() else -1)
+
 
 with open(pjoin(dirname(__file__), 'orderedmultidict', '__init__.py')) as fd:
     VERSION = re.compile(
@@ -61,6 +74,6 @@ setup(
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
     install_requires=required,
-    test_suite='tests',
+    cmdclass={'test': PyTest},
     tests_require=tests_require,
 )
