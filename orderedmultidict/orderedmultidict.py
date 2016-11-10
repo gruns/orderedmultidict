@@ -622,8 +622,8 @@ class omdict(MutableMapping):
         """
         if key is not _absent:
             if key in self:
-                l = [(node.key, node.value) for node in self._map[key]]
-                return iter(l)
+                items = [(node.key, node.value) for node in self._map[key]]
+                return iter(items)
             raise KeyError(key)
         items = six.iteritems(self._map)
         return iter((key, nodes[0].value) for (key, nodes) in items)
