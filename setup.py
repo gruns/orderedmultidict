@@ -46,7 +46,7 @@ class RunTests(SimpleCommand):
 
       http://doc.pytest.org/en/latest/goodpractices.html
 
-    Running the unit tests manually here enalbes `python setup.py test`
+    Running the unit tests manually here enables `python setup.py test`
     without tests/ being a Python module.
     """
     def run(self):
