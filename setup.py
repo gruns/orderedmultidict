@@ -5,17 +5,57 @@ import os
 import re
 import sys
 from os.path import dirname, join as pjoin
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Command
+
 
 with open(pjoin(dirname(__file__), 'orderedmultidict', '__init__.py')) as fd:
     VERSION = re.compile(
         r".*__version__ = '(.*?)'", re.S).match(fd.read()).group(1)
 
-if sys.argv[-1] == 'publish':
+
+class SimpleCommand(Command):
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        raise NotImplementedError
+
+
+class Publish(SimpleCommand):
     """Publish to PyPI with twine."""
-    os.system('python setup.py sdist')
-    os.system('twine upload dist/orderedmultidict-%s.tar.gz' % VERSION)
-    sys.exit()
+    def run(self):
+        os.system('python setup.py sdist')
+        rc = os.system(
+            'twine upload dist/orderedmultidict-%s.tar.gz' % VERSION)
+        sys.exit(rc)
+
+
+class RunTests(SimpleCommand):
+    """
+    Run the unit tests.
+
+    By default, `python setup.py test` fails if tests/ isn't a Python
+    module (that is, if the tests/ directory doesn't contain an
+    __init__.py file). But the tests/ directory shouldn't contain an
+    __init__.py file and tests/ shouldn't be a Python module. See
+
+      http://doc.pytest.org/en/latest/goodpractices.html
+
+    Running the unit tests manually here enalbes `python setup.py test`
+    without tests/ being a Python module.
+    """
+    def run(self):
+        from unittest import TestLoader, TextTestRunner
+        tests_dir = pjoin(dirname(__file__), 'tests')
+        suite = TestLoader().discover(tests_dir)
+        result = TextTestRunner().run(suite)
+        sys.exit(0 if result.wasSuccessful() else -1)
+
 
 long_description = ('''
 A multivalue dictionary is a dictionary that can store multiple values for the
@@ -61,6 +101,9 @@ setup(
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
     install_requires=required,
-    test_suite='tests',
+    cmdclass={
+        'test': RunTests,
+        'publish': Publish,
+    },
     tests_require=tests_require,
 )
