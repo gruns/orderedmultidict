@@ -626,7 +626,7 @@ class omdict(MutableMapping):
                 return iter(l)
             raise KeyError(key)
         items = six.iteritems(self._map)
-        return ((key, nodes[0].value) for (key, nodes) in items)
+        return iter((key, nodes[0].value) for (key, nodes) in items)
 
     def iterkeys(self):
         return six.iterkeys(self._map)
