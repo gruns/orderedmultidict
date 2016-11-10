@@ -37,21 +37,22 @@ class Publish(SimpleCommand):
 
 class RunTests(SimpleCommand):
     """
-    Run the unit tests manually.
+    Run the unit tests.
 
-    Without guidance, `python setup.py test` fails if tests/ isn't a
-    Python module (that is, if tests/ doesn't contain a __init__.py
-    file). But the tests/ directory shouldn't contain a __init__.py
-    file and shouldn't be a Python module. See
+    By default, `python setup.py test` fails if tests/ isn't a Python
+    module (that is, if the tests/ directory doesn't contain an
+    __init__.py file). But the tests/ directory shouldn't contain an
+    __init__.py file and tests/ shouldn't be a Python module. See
 
       http://doc.pytest.org/en/latest/goodpractices.html
 
-    Running the unit tests manually here allows `python setup.py test`
-    to work without tests/ being a Python module.
+    Running the unit tests manually here enalbes `python setup.py test`
+    without tests/ being a Python module.
     """
     def run(self):
         from unittest import TestLoader, TextTestRunner
-        suite = TestLoader().discover('./tests/')
+        tests_dir = pjoin(dirname(__file__), 'tests')
+        suite = TestLoader().discover(tests_dir)
         result = TextTestRunner().run(suite)
         sys.exit(0 if result.wasSuccessful() else -1)
 
