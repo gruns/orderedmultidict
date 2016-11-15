@@ -6,6 +6,7 @@ import re
 import sys
 from os.path import dirname, join as pjoin
 from setuptools import setup, find_packages, Command
+from setuptools.command.test import test as TestCommand
 
 
 with open(pjoin(dirname(__file__), 'orderedmultidict', '__init__.py')) as fd:
@@ -13,7 +14,8 @@ with open(pjoin(dirname(__file__), 'orderedmultidict', '__init__.py')) as fd:
         r".*__version__ = '(.*?)'", re.S).match(fd.read()).group(1)
 
 
-class SimpleCommand(Command):
+class Publish(Command):
+    """Publish to PyPI with twine."""
     user_options = []
 
     def initialize_options(self):
@@ -23,19 +25,13 @@ class SimpleCommand(Command):
         pass
 
     def run(self):
-        raise NotImplementedError
-
-
-class Publish(SimpleCommand):
-    """Publish to PyPI with twine."""
-    def run(self):
         os.system('python setup.py sdist')
         rc = os.system(
             'twine upload dist/orderedmultidict-%s.tar.gz' % VERSION)
         sys.exit(rc)
 
 
-class RunTests(SimpleCommand):
+class RunTests(TestCommand):
     """
     Run the unit tests.
 
@@ -49,7 +45,7 @@ class RunTests(SimpleCommand):
     Running the unit tests manually here enables `python setup.py test`
     without tests/ being a Python module.
     """
-    def run(self):
+    def run_tests(self):
         from unittest import TestLoader, TextTestRunner
         tests_dir = pjoin(dirname(__file__), 'tests')
         suite = TestLoader().discover(tests_dir)
