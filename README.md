@@ -12,7 +12,7 @@ the order of insertions and deletions.
 orderedmultidict is well tested, [Unlicensed](http://unlicense.org/) in the
 public domain, and supports\ Python 2, Python 3, PyPy2, and PyPy3.
 
-omdict can store multiple values per key.
+Code time: omdict can store multiple values per key.
 
 ```python
 >>> from orderedmultidict import omdict
