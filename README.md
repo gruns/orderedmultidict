@@ -5,12 +5,12 @@
 
 ### omdict is an ordered multivalue dictionary that retains method parity with Python's [dict](http://docs.python.org/library/stdtypes.html#dict).
 
-A multivalue dictionary is a dictionary that can store multiple values per
-key. An ordered multivalue dictionary is a multivalue dictionary that retains
-the order of insertions and deletions.
+A multivalue dictionary is a dictionary that can store multiple values per\
+key. An ordered multivalue dictionary is a multivalue dictionary that\
+retains the order of insertions and deletions.
 
-orderedmultidict is well tested, [Unlicensed](http://unlicense.org/) in the
-public domain, and supports Python 2, Python 3, PyPy2, and PyPy3.
+orderedmultidict is well tested, [Unlicensed](http://unlicense.org/) in the public domain, and\
+supports Python 2, Python 3, PyPy2, and PyPy3.
 
 Code time: omdict can store multiple values per key.
 
@@ -62,7 +62,7 @@ True
 
 ### API
 
-See all of omdict's methods, with examples, in omdict's API document,
+See all of omdict's methods, with examples, in omdict's API document,\
 [API.md](https://github.com/gruns/orderedmultidict/blob/master/API.md).
 
 
