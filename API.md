@@ -30,7 +30,8 @@ Simple.
 
 ### Method parity with dict
 
-All [dict](http://docs.python.org/library/stdtypes.html#dict) methods behave identically on omdict objects.
+All [dict](http://docs.python.org/library/stdtypes.html#dict) methods behave identically on omdict objects (__pop()__,\
+__setdefault()__, __clear()__, etc)
 
 
 ### Initialization and Updates
@@ -129,7 +130,7 @@ is returned.
 'sup'
 ```
 
-__getlist(key, default=[])__ is like get(key, default=None) except it returns the\
+__getlist(key, default=[])__ is like `get(key, default=None)` except it returns the\
 list of values assocaited with __key__.
 
 ```python
@@ -143,7 +144,7 @@ list of values assocaited with __key__.
 ```
 
 __set(key, value=None)__ sets __key__'s value to __value__. Identical in function to\
-omd[key] = value. Returns the omdict object for method chaining.
+`omd[key] = value`. Returns the omdict object for method chaining.
 
 ```python
 >>> omd = omdict([(1,1), (1,11), (1,111)])
@@ -181,9 +182,9 @@ default=None)](http://docs.python.org/library/stdtypes.html#dict.setdefault).
 [(1, 1), (2, None)]
 ```
 
-__setdefaultlist(key, defaultlist=[None])__ is like setdefault(key,\
-default=None) except a list of values for __key__ is adopted. If __defaultlist__ isn't\
-provided, __key__'s value becomes None.
+__setdefaultlist(key, defaultlist=[None])__ is like\
+`setdefault(key, default=None)` except a list of values for __key__ is adopted. If\
+__defaultlist__ isn't provided, __key__'s value becomes None.
 
 ```python
 >>> omd = omdict([(1,1)])
@@ -267,7 +268,7 @@ dictionary key. __iterlists()__ returns and iterator over lists().
 ```
 
 __listitems()__ returns a list of key:valuelist items. __iterlistitems()__ returns an\
-iterator over listitems().
+iterator over __listitems()__.
 
 ```python
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3), (2,22)])
@@ -279,7 +280,7 @@ __allitems([key])__ returns a list of every item in the dictionary, including\
 multiple items with the same key. If __key__ is provided and in the dictionary,\
 only items with key __key__ are returned . KeyError is raised if __key__ is\
 provided and not in the dictionary. __iterallitems([key])__ returns an iterator\
-over allitems(key).
+over __allitems(key)__.
 
 ```python
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
@@ -288,7 +289,7 @@ over allitems(key).
 ```
 
 __allkeys()__ returns a list of the keys of every item in the dictionary.\
-__iterallkeys()__ returns an iterator over allkeys().
+__iterallkeys()__ returns an iterator over __allkeys()__.
 
 ```python
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
@@ -297,7 +298,7 @@ __iterallkeys()__ returns an iterator over allkeys().
 ```
 
 __allvalues()__ returns a list of the values of every item in the dictionary.\
-__iterallvalues()__ returns an iterator over allvalues().
+__iterallvalues()__ returns an iterator over __allvalues()__.
 
 ```python
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
@@ -322,7 +323,7 @@ the dictionary.
 [(2, 2)]
 ```
 
-__poplist(key[, default])__ is like pop(key[, default]) except it returns the list of\
+__poplist(key[, default])__ is like `pop(key[, default])` except it returns the list of\
 values for __key__. KeyError is raised if __default__ isn't provided and __key__ isn't in\
 the dictionary.
 
@@ -348,7 +349,7 @@ returned.
 If __value__ is provided, the first or last (__key__,__value__) item is popped and __value__\
 is returned.
 
-If __key__ no longer has any values after a popvalue() call, __key__ is removed\
+If __key__ no longer has any values after a __popvalue()__ call, __key__ is removed\
 from the dictionary. __default__ is returned if provided and __key__ isn't in the\
 dictionary. KeyError is raised if __default__ isn't provided and __key__ isn't in the\
 dictionary. ValueError is raised if __value__ is provided but isn't a value for\
@@ -378,11 +379,11 @@ __key__.
 
 __popitem(fromall=False, last=True)__ pops and returns a key:value item.
 
-If __fromall__ is False, items()[0] is popped if __last__ is False or items()[-1] is\
+If __fromall__ is False, `items()[0]` is popped if __last__ is False or `items()[-1]` is\
 popped if __last__ is True. All remaining items with the same key are\
 removed.
 
-If __fromall__ is True, allitems()[0] is popped if __last__ is False or allitems()[-1] is\
+If __fromall__ is True, `allitems()[0]` is popped if __last__ is False or `allitems()[-1]` is\
 popped if __last__ is True. No other remaining items are removed, even if\
 they have the same key.
 
@@ -410,8 +411,8 @@ they have the same key.
 
 __poplistitem([key], last=True)__ pops and returns a key:valuelist item\
 comprised of a key and that key's list of values. If __last__ is False, a\
-key:valuelist item comprised of keys()[0] and its list of values is popped\
-and returned. If __last__ is True, a key:valuelist item comprised of keys()[-1]\
+key:valuelist item comprised of `keys()[0]` and its list of values is popped\
+and returned. If __last__ is True, a key:valuelist item comprised of `keys()[-1]`\
 and its list of values is popped and returned. KeyError is raised if the\
 dictionary is empty or if __key__ is provided and not in the dictionary.
 
