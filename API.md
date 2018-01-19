@@ -231,8 +231,8 @@ for __key__. Returns the omdict object for method chaining.
 
 __items([key])__ behaves identically to [dict.items()](http://docs.python.org/library/stdtypes.html#dict.items) except an optional __key__\
 parameter has been added. If __key__ is provided, only items with key __key__\
-are returned. __iteritems([key])__ returns an iterator over items(key). KeyError\
-is raised if __key__ is provided and not in the dictionary.
+are returned. __iteritems([key])__ returns an iterator over `items(key)`. KeyError\
+is raised if __key__ is provided but not in the dictionary.
 
 ```python
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
@@ -247,8 +247,8 @@ over keys().
 
 __values([key])__ behaves identically to [dict.values()](http://docs.python.org/library/stdtypes.html#dict.values) except an optional __key__\
 parameter has been added. If __key__ is provided, only the values for __key__ are\
-returned. __itervalues([key])__ returns an iterator over values(key). KeyError\
-is raised if __key__ is provided and not in the dictionary.
+returned. __itervalues([key])__ returns an iterator over `values(key)`. KeyError\
+is raised if __key__ is provided but not in the dictionary.
 
 ```python
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
