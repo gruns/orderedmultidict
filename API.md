@@ -130,7 +130,7 @@ is returned.
 'sup'
 ```
 
-__getlist(key, default=[])__ is like `get(key, default=None)` except it returns the\
+__getlist(key, default=[])__ is like __get(key, default=None)__ except it returns the\
 list of values assocaited with __key__.
 
 ```python
@@ -183,7 +183,7 @@ default=None)](http://docs.python.org/library/stdtypes.html#dict.setdefault).
 ```
 
 __setdefaultlist(key, defaultlist=[None])__ is like\
-`setdefault(key, default=None)` except a list of values for __key__ is adopted. If\
+__setdefault(key, default=None)__ except a list of values for __key__ is adopted. If\
 __defaultlist__ isn't provided, __key__'s value becomes None.
 
 ```python
