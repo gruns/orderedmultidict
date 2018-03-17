@@ -259,7 +259,7 @@ is raised if __key__ is provided but not in the dictionary.
 ```
 
 __lists()__ returns a list comprised of the lists of values associated with each\
-dictionary key. __iterlists()__ returns and iterator over lists().
+dictionary key. __iterlists()__ returns an iterator over __lists()__.
 
 ```python
 >>> omd = omdict([(1,1), (1,11), (1,111), (2,2), (3,3)])
