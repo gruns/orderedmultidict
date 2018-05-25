@@ -73,7 +73,7 @@ if sys.version_info[:2] < (2, 7):
 setup(
     name='orderedmultidict',
     version=VERSION,
-    author='Arthur Grunseid',
+    author='Ansgar Grunseid',
     author_email='grunseid@gmail.com',
     url='https://github.com/gruns/orderedmultidict',
     license='Unlicense',
@@ -91,7 +91,6 @@ setup(
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: Implementation :: PyPy',
