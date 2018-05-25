@@ -3,7 +3,7 @@
 #
 # omdict - Ordered Multivalue Dictionary.
 #
-# Arthur Grunseid
+# Ansgar Grunseid
 # grunseid.com
 # grunseid@gmail.com
 #
@@ -15,7 +15,7 @@ from .orderedmultidict import *  # noqa
 
 __title__ = 'orderedmultidict'
 __version__ = '0.7.11'
-__author__ = 'Arthur Grunseid'
+__author__ = 'Ansgar Grunseid'
 __contact__ = 'grunseid@gmail.com'
 __license__ = 'Unlicense'
 __url__ = 'https://github.com/gruns/orderedmultidict'

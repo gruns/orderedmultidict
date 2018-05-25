@@ -3,7 +3,7 @@
 #
 # omdict - Ordered Multivalue Dictionary.
 #
-# Arthur Grunseid
+# Ansgar Grunseid
 # grunseid.com
 # grunseid@gmail.com
 #

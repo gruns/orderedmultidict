@@ -1,6 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#
+# omdict - Ordered Multivalue Dictionary.
+#
+# Ansgar Grunseid
+# grunseid.com
+# grunseid@gmail.com
+#
+# License: Build Amazing Things (Unlicense)
+
 import os
 import re
 import sys
