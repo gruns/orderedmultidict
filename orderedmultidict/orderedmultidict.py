@@ -216,7 +216,7 @@ class omdict(MutableMapping):
 
     def _update_updateall(self, replace_at_most_one, *args, **kwargs):
         # Bin the items in <args> and <kwargs> into <replacements> or
-        # <leftovers>. Items in <replacements. are new values to replace old
+        # <leftovers>. Items in <replacements> are new values to replace old
         # values for a given key, and items in <leftovers> are new items to be
         # added.
         replacements, leftovers = dict(), []
