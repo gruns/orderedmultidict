@@ -43,7 +43,7 @@ omdict retains insertion and deletion order.
 [(2, 'sup'), (1, 1)]
 ```
 
-Method parity with dict is retained. omdict can be a drop-in replacement.
+Method parity with dict is retained; omdict can be a drop-in replacement.
 
 ```python
 >>> d, omd = dict(), omdict()
