@@ -19,8 +19,8 @@ from setuptools.command.test import test as TestCommand
 
 
 with open(pjoin(dirname(__file__), 'orderedmultidict', '__init__.py')) as fd:
-    VERSION = re.compile(
-        r".*__version__ = '(.*?)'", re.S).match(fd.read()).group(1)
+    regex = r".*__version__ = '(.*?)'"
+    VERSION = re.compile(regex, re.S).match(fd.read()).group(1)
 
 
 class Publish(Command):
