@@ -1,6 +1,6 @@
 <h1>
   <div align="center">
-    <img src="https://openclipart.org/download/275692/1489798288.svg" width="300px" alt="orderedmultidict">
+    <img src="https://raw.githubusercontent.com/gruns/orderedmultidict/master/logo.svg" width="300px" alt="orderedmultidict">
   </div>
   orderedmultidict
 </h1>
