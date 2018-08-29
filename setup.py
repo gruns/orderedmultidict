@@ -34,9 +34,10 @@ class Publish(Command):
         pass
 
     def run(self):
-        os.system('python setup.py sdist')
-        rc = os.system(
-            'twine upload dist/orderedmultidict-%s.tar.gz' % VERSION)
+        os.system('python setup.py sdist bdist_wheel')
+        sdist = 'dist/orderedmultidict-%s.tar.gz' % VERSION
+        wheel = 'dist/orderedmultidict-%s-py2.py3-none-any.whl' % VERSION
+        rc = os.system('twine upload %s %s' % (egg, wheel))
         sys.exit(rc)
 
 
