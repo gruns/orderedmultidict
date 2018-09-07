@@ -8,7 +8,8 @@
 [![Badge fury](https://badge.fury.io/py/orderedmultidict.svg)](https://pypi.python.org/pypi/orderedmultidict)
 [![Build status](https://api.travis-ci.org/gruns/orderedmultidict.svg)](https://travis-ci.org/gruns/orderedmultidict)
 
-### omdict is an ordered multivalue dictionary that retains method parity with Python's [dict](http://docs.python.org/library/stdtypes.html#dict) and helps power [furl](https://github.com/gruns/furl).
+### omdict is an ordered multivalue dictionary that retains<br>
+method parity with Python's [dict](http://docs.python.org/library/stdtypes.html#dict) and helps power [furl](https://github.com/gruns/furl).
 
 A multivalue dictionary is a dictionary that can store multiple values per\
 key. An ordered multivalue dictionary is a multivalue dictionary that\
