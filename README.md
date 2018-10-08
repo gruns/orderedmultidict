@@ -5,8 +5,10 @@
   orderedmultidict
 </h1>
 
-[![Badge fury](https://badge.fury.io/py/orderedmultidict.svg)](https://pypi.python.org/pypi/orderedmultidict)
-[![Build status](https://api.travis-ci.org/gruns/orderedmultidict.svg)](https://travis-ci.org/gruns/orderedmultidict)
+<p align="center">
+  <a href="https://pypi.python.org/pypi/orderedmultidict"><img src="https://badge.fury.io/py/orderedmultidict.svg"></a>
+  <a href="https://travis-ci.org/gruns/orderedmultidict"><img src="https://api.travis-ci.org/gruns/orderedmultidict.svg"></a>
+</p>
 
 ### omdict is an ordered multivalue dictionary that retains<br>method parity with Python's [dict](http://docs.python.org/library/stdtypes.html#dict) and helps power [furl](https://github.com/gruns/furl).
 
