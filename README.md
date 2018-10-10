@@ -8,6 +8,8 @@
 <p align="center">
   <a href="https://pypi.python.org/pypi/orderedmultidict"><img src="https://badge.fury.io/py/orderedmultidict.svg"></a>
   <a href="https://travis-ci.org/gruns/orderedmultidict"><img src="https://api.travis-ci.org/gruns/orderedmultidict.svg"></a>
+  <a href="http://unlicense.org/"><img src="https://img.shields.io/pypi/l/orderedmultidict.svg"></a>
+  <a href="https://pypi.python.org/pypi/orderedmultidict"><img src="https://img.shields.io/pypi/pyversions/orderedmultidict.svg"></a>
 </p>
 
 ### omdict is an ordered multivalue dictionary that retains<br>method parity with Python's [dict](http://docs.python.org/library/stdtypes.html#dict) and helps power [furl](https://github.com/gruns/furl).
