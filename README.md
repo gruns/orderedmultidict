@@ -1,5 +1,5 @@
-<h1>
-  <div align="center">
+<h1 align="center">
+  <div>
     <img src="logo.svg" width="300px" height="300px" alt="orderedmultidict">
   </div>
   orderedmultidict
