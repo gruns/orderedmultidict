@@ -26,6 +26,15 @@ except ImportError:
 
 _unique = object()
 
+
+def callable_attr(o, attr):
+    return hasattr(o, attr) and callable(getattr(o, attr))
+
+
+def is_iterator(i):
+    return callable_attr(i, 'next') or callable_attr(i, '__next__')
+
+
 # Utility list subclass to expose items() and iteritems() methods on basic
 # lists. This provides a common iteration interface for lists and dictionaries
 # for looping through their items without having to test for and maintain two
@@ -530,14 +539,19 @@ class TestOmdict(unittest.TestCase):
                 assert listitem == (key, valuelist)
 
             # Testing iteritems(), iterkeys(), itervalues(), and iterlists().
+            assert is_iterator(omd.iterkeys())
             for key1, key2 in zip(omd.iterkeys(), six.iterkeys(dic)):
                 assert key1 == key2
+            assert is_iterator(omd.itervalues())
             for val1, val2 in zip(omd.itervalues(), six.itervalues(dic)):
                 assert val1 == val2
+            assert is_iterator(omd.iteritems())
             for item1, item2 in zip(omd.iteritems(), six.iteritems(dic)):
                 assert item1 == item2
+            assert is_iterator(omd.iterlists())
             for key, values in zip(six.iterkeys(omd), omd.iterlists()):
                 assert omd.getlist(key) == values
+            assert is_iterator(omd.iterlistitems())
             iterator = zip(
                 omd.iterkeys(), omd.iterlists(), omd.iterlistitems())
             for key, valuelist, listitem in iterator:
@@ -545,10 +559,11 @@ class TestOmdict(unittest.TestCase):
 
             # Test iteritems() and itervalues() with a key.
             for key in omd.iterkeys():
+                assert is_iterator(omd.iteritems(key))
                 assert list(omd.iteritems(key)) == list(zip(
                     repeat(key), omd.getlist(key)))
-                assert list(omd.iterallitems(key)) == list(zip(
-                    repeat(key), omd.getlist(key)))
+                assert is_iterator(omd.itervalues(key))
+                assert list(omd.itervalues(key)) == omd.getlist(key)
             for nonkey in self.nonkeys:
                 self.assertRaises(KeyError, omd.iteritems, nonkey)
                 self.assertRaises(KeyError, omd.itervalues, nonkey)
