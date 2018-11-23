@@ -18,9 +18,9 @@ from setuptools import setup, find_packages, Command
 from setuptools.command.test import test as TestCommand
 
 
-with open(pjoin(dirname(__file__), 'orderedmultidict', '__init__.py')) as fd:
-    regex = r".*__version__ = '(.*?)'"
-    VERSION = re.compile(regex, re.S).match(fd.read()).group(1)
+meta = {}
+with open(pjoin('orderedmultidict', '__version__.py')) as f:
+    exec(f.read(), meta)
 
 
 class Publish(Command):
@@ -36,8 +36,9 @@ class Publish(Command):
     def run(self):
         os.system('python setup.py sdist bdist_wheel')
 
-        sdist = 'dist/orderedmultidict-%s.tar.gz' % VERSION
-        wheel = 'dist/orderedmultidict-%s-py2.py3-none-any.whl' % VERSION
+        fpath = 'dist/orderedmultidict'
+        sdist = '%s-%s.tar.gz' % (fpath, meta['__version__'])
+        wheel = '%s-%s-py2.py3-none-any.whl' % (fpath, meta['__version__'])
         rc = os.system('twine upload "%s" "%s"' % (sdist, wheel))
 
         sys.exit(rc)
@@ -83,13 +84,13 @@ if sys.version_info[:2] < (2, 7):
     tests_require += ['unittest2']
 
 setup(
-    name='orderedmultidict',
-    version=VERSION,
-    author='Ansgar Grunseid',
-    author_email='grunseid@gmail.com',
-    url='https://github.com/gruns/orderedmultidict',
-    license='Unlicense',
-    description='Ordered Multivalue Dictionary - omdict.',
+    name=meta['__title__'],
+    version=meta['__version__'],
+    author=meta['__author__'],
+    author_email=meta['__contact__'],
+    url=meta['__url__'],
+    license=meta['__license__'],
+    description='Ordered Multivalue Dictionary',
     long_description=long_description,
     packages=find_packages(),
     include_package_data=True,
