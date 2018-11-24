@@ -90,7 +90,7 @@ setup(
     author_email=meta['__contact__'],
     url=meta['__url__'],
     license=meta['__license__'],
-    description='Ordered Multivalue Dictionary',
+    description=meta['__description__'],
     long_description=long_description,
     packages=find_packages(),
     include_package_data=True,
