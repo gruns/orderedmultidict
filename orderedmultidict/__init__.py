@@ -9,8 +9,6 @@
 #
 # License: Build Amazing Things (Unlicense)
 
-from __future__ import absolute_import
-
 from os.path import dirname, join as pjoin
 
 from .orderedmultidict import *  # noqa
