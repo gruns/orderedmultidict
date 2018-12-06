@@ -36,9 +36,9 @@ class Publish(Command):
     def run(self):
         os.system('python setup.py sdist bdist_wheel')
 
-        fpath = 'dist/orderedmultidict'
-        sdist = '%s-%s.tar.gz' % (fpath, meta['__version__'])
-        wheel = '%s-%s-py2.py3-none-any.whl' % (fpath, meta['__version__'])
+        base = 'dist/orderedmultidict'
+        sdist = '%s-%s.tar.gz' % (base, meta['__version__'])
+        wheel = '%s-%s-py2.py3-none-any.whl' % (base, meta['__version__'])
         rc = os.system('twine upload "%s" "%s"' % (sdist, wheel))
 
         sys.exit(rc)
