@@ -79,7 +79,7 @@ required = ['six>=1.8.0']
 if sys.version_info < (2, 7):
     required.append('ordereddict')
 
-tests_require = ['pycodestyle']
+tests_require = ['flake8']
 if sys.version_info[:2] < (2, 7):
     tests_require += ['unittest2']
 
