@@ -11,7 +11,6 @@
 # License: Build Amazing Things (Unlicense)
 
 import os
-import re
 import sys
 from os.path import dirname, join as pjoin
 from setuptools import setup, find_packages, Command
