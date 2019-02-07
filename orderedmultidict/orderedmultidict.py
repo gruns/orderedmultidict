@@ -13,19 +13,23 @@
 from __future__ import absolute_import
 
 from itertools import chain
-from collections import MutableMapping
 
 import six
 from six.moves import map, zip_longest
 
 from .itemlist import itemlist
+import sys
+
+if six.PY3:
+    from collections.abc import MutableMapping
+else:
+    from collections import MutableMapping
 
 try:
     from collections import OrderedDict as odict  # Python 2.7 and later.
 except ImportError:
     from ordereddict import OrderedDict as odict  # Python 2.6 and earlier.
 
-import sys
 items_attr = 'items' if sys.version_info[0] >= 3 else 'iteritems'
 
 _absent = object()  # Marker that means no parameter was provided.
