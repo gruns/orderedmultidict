@@ -863,6 +863,19 @@ class TestBinaryOperators(unittest.TestCase):
             (original, empty, original, original),
         ]
 
+    @property
+    def _add_params(self):
+        original, one_different, all_different, duplicate_key, empty = self._items
+        return [
+            # self items, other items, other as dict result, other as omdict result
+            # can intermittently fail with regular dict because of order, use odict
+            (original, original, original, original),
+            (original, one_different, original + ((3, 'd'),), original + ((3, 'd'),)),
+            (original, all_different, ((1, 'c'), (2, 'b'), (3, 'd')), ((1, 'c'), (2, 'b'), (3, 'd'))),
+            (original, duplicate_key, ((1, 'e'), (2, 'b')), ((1, 'e'), (2, 'b'))),
+            (original, empty, original, original),
+        ]
+
     def test_or(self):
         for s, t, d, o in self._or_params:
             assert omdict(s) | dict(t) == omdict(d)
@@ -877,6 +890,22 @@ class TestBinaryOperators(unittest.TestCase):
             # test with omdict
             a = omdict(s)
             a |= omdict(t)
+            assert a == omdict(o)
+
+    def test_add(self):
+        for s, t, d, o in self._add_params:
+            assert omdict(s) + odict(t) == omdict(d)
+            assert omdict(s) + omdict(t) == omdict(o)
+
+    def test_iadd(self):
+        for s, t, d, o in self._add_params:
+            # test with dict
+            a = omdict(s)
+            a += odict(t)
+            assert a == omdict(d)
+            # test with omdict
+            a = omdict(s)
+            a += omdict(t)
             assert a == omdict(o)
 
 

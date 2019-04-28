@@ -823,6 +823,17 @@ class omdict(MutableMapping):
             self.add(k, value=v)
         return self
 
+    def __add__(self, other):
+        c = self.copy()
+        for k, v in _get_items(other):
+            c.set(k, value=v)
+        return c
+
+    def __iadd__(self, other):
+        for k, v in _get_items(other):
+            self.set(k, value=v)
+        return self
+
 
 def _get_items(mapping):
     """Find item iterator for an object."""
