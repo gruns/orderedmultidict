@@ -816,7 +816,8 @@ class omdict(MutableMapping):
         return '%s(%s)' % (self.__class__.__name__, self.allitems())
 
     def __add__(self, other):
-        return self.__class__(chain(self._items_iterator(self), self._items_iterator(other)))
+        return self.__class__(
+            chain(self._items_iterator(self), self._items_iterator(other)))
 
     def __iadd__(self, other):
         for k, v in self._items_iterator(other):

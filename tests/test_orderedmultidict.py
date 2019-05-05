@@ -853,26 +853,35 @@ class TestBinaryOperators(unittest.TestCase):
 
     @property
     def _add_params(self):
-        original, one_different, all_different, duplicate_key, empty = self._items
+        original, one_different, all_different, duplicate_key, empty = \
+            self._items
         return [
             # self, other, other as dict, other as omdict
             (original, original, original + original, original + original),
-            (original, one_different, original + one_different, original + one_different),
-            (original, all_different, original + all_different, original + all_different),
-            (original, duplicate_key, original + ((1, 'e'),), original + duplicate_key),
+            (original, one_different, original + one_different,
+             original + one_different),
+            (original, all_different, original + all_different,
+             original + all_different),
+            (original, duplicate_key, original + ((1, 'e'),),
+             original + duplicate_key),
             (original, empty, original, original),
         ]
 
     @property
     def _or_params(self):
-        original, one_different, all_different, duplicate_key, empty = self._items
+        original, one_different, all_different, duplicate_key, empty = \
+            self._items
         return [
-            # self items, other items, other as dict result, other as omdict result
-            # can intermittently fail with regular dict because of order, use odict
+            # self items, other items, other as dict result, other as omdict
+            # result can intermittently fail with regular dict because of
+            # order, use odict
             (original, original, original, original),
-            (original, one_different, original + ((3, 'd'),), original + ((3, 'd'),)),
-            (original, all_different, ((1, 'c'), (2, 'b'), (3, 'd')), ((1, 'c'), (2, 'b'), (3, 'd'))),
-            (original, duplicate_key, ((1, 'e'), (2, 'b')), ((1, 'e'), (2, 'b'))),
+            (original, one_different, original + ((3, 'd'),),
+             original + ((3, 'd'),)),
+            (original, all_different, ((1, 'c'), (2, 'b'), (3, 'd')),
+             ((1, 'c'), (2, 'b'), (3, 'd'))),
+            (original, duplicate_key, ((1, 'e'), (2, 'b')),
+             ((1, 'e'), (2, 'b'))),
             (original, empty, original, original),
         ]
 
