@@ -852,7 +852,7 @@ class TestBinaryOperators(unittest.TestCase):
         return original, one_different, all_different, duplicate_key, empty
 
     @property
-    def _or_params(self):
+    def _add_params(self):
         original, one_different, all_different, duplicate_key, empty = self._items
         return [
             # self, other, other as dict, other as omdict
@@ -864,7 +864,7 @@ class TestBinaryOperators(unittest.TestCase):
         ]
 
     @property
-    def _add_params(self):
+    def _or_params(self):
         original, one_different, all_different, duplicate_key, empty = self._items
         return [
             # self items, other items, other as dict result, other as omdict result
