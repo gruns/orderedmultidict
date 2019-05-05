@@ -815,19 +815,22 @@ class omdict(MutableMapping):
     def __repr__(self):
         return '%s(%s)' % (self.__class__.__name__, self.allitems())
 
-    def __or__(self, other):
-        return self.__class__(chain(_get_items(self), _get_items(other)))
+    def __add__(self, other):
+        return self.__class__(
+            chain(self._items_iterator(self), self._items_iterator(other)))
 
-    def __ior__(self, other):
-        for k, v in _get_items(other):
+    def __iadd__(self, other):
+        for k, v in self._items_iterator(other):
             self.add(k, value=v)
         return self
 
+    def __or__(self, other):
+        c = self.copy()
+        for k, v in self._items_iterator(other):
+            c.set(k, value=v)
+        return c
 
-def _get_items(mapping):
-    """Find item iterator for an object."""
-    names = ('iterallitems', 'allitems', 'iteritems', 'items')
-    exist = (n for n in names if callable_attr(mapping, n))
-    for a in exist:
-        return getattr(mapping, a)()
-    raise TypeError("Object {} has no compatible items interface.".format(mapping))
+    def __ior__(self, other):
+        for k, v in self._items_iterator(other):
+            self.set(k, value=v)
+        return self
