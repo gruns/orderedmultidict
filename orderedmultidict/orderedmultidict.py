@@ -12,27 +12,26 @@
 
 from __future__ import absolute_import
 
+import sys
 from itertools import chain
 
 import six
 from six.moves import map, zip_longest
 
 from .itemlist import itemlist
-import sys
 
-if six.PY3:
-    from collections.abc import MutableMapping
-else:
+if six.PY2:
     from collections import MutableMapping
-
+else:
+    from collections.abc import MutableMapping
 try:
     from collections import OrderedDict as odict  # Python 2.7 and later.
 except ImportError:
     from ordereddict import OrderedDict as odict  # Python 2.6 and earlier.
 
-items_attr = 'items' if sys.version_info[0] >= 3 else 'iteritems'
 
 _absent = object()  # Marker that means no parameter was provided.
+_items_attr = 'items' if sys.version_info[0] >= 3 else 'iteritems'
 
 
 def callable_attr(obj, attr):
@@ -770,7 +769,7 @@ class omdict(MutableMapping):
             for i1, i2 in zip_longest(myiter, otheriter, fillvalue=_absent):
                 if i1 != i2 or i1 is _absent or i2 is _absent:
                     return False
-        elif not hasattr(other, '__len__') or not hasattr(other, items_attr):
+        elif not hasattr(other, '__len__') or not hasattr(other, _items_attr):
             return False
         # Ignore order so we can compare ordered omdicts with unordered dicts.
         else:
