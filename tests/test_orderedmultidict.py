@@ -840,6 +840,46 @@ class TestOmdict(unittest.TestCase):
         assert splat(*omd, **omd) == (tuple(i[0] for i in items), set(items))
 
 
+class TestBinaryOperators(unittest.TestCase):
+
+    @property
+    def _items(self):
+        original = (1, ['a']), (2, 'b')
+        one_different = (1, ['a']), (3, 'd')
+        all_different = (1, 'c'), (3, 'd')
+        duplicate_key = (1, ['a']), (1, 'e')
+        empty = tuple()
+        return original, one_different, all_different, duplicate_key, empty
+
+    @property
+    def _or_params(self):
+        original, one_different, all_different, duplicate_key, empty = self._items
+        return [
+            # self, other, other as dict, other as omdict
+            (original, original, original + original, original + original),
+            (original, one_different, original + one_different, original + one_different),
+            (original, all_different, original + all_different, original + all_different),
+            (original, duplicate_key, original + ((1, 'e'),), original + duplicate_key),
+            (original, empty, original, original),
+        ]
+
+    def test_or(self):
+        for s, t, d, o in self._or_params:
+            assert omdict(s) | dict(t) == omdict(d)
+            assert omdict(s) | omdict(t) == omdict(o)
+
+    def test_ior(self):
+        for s, t, d, o in self._or_params:
+            # test with dict
+            a = omdict(s)
+            a |= dict(t)
+            assert a == omdict(d)
+            # test with omdict
+            a = omdict(s)
+            a |= omdict(t)
+            assert a == omdict(o)
+
+
 class TestUtilities(unittest.TestCase):
 
     def test_rfind(self):
