@@ -11,7 +11,7 @@
 #
 
 __title__ = 'orderedmultidict'
-__version__ = '1.0'
+__version__ = '1.0.1'
 __license__ = 'Unlicense'
 __author__ = 'Ansgar Grunseid'
 __contact__ = 'grunseid@gmail.com'
