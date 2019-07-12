@@ -853,13 +853,13 @@ class TestBinaryOperators(unittest.TestCase):
 
     @property
     def _or_params(self):
-        original, one_different, all_different, duplicate_key, empty = self._items
+        original, one_diff, all_diff, dupe_key, empty = self._items
         return [
-            # self, other, other as dict, other as omdict
+            # self, other, other as dict, other as omdict.
             (original, original, original + original, original + original),
-            (original, one_different, original + one_different, original + one_different),
-            (original, all_different, original + all_different, original + all_different),
-            (original, duplicate_key, original + ((1, 'e'),), original + duplicate_key),
+            (original, one_diff, original + one_diff, original + one_diff),
+            (original, all_diff, original + all_diff, original + all_diff),
+            (original, dupe_key, original + ((1, 'e'),), original + dupe_key),
             (original, empty, original, original),
         ]
 

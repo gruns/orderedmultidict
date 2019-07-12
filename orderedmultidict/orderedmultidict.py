@@ -829,4 +829,5 @@ def _get_items(mapping):
     exist = (n for n in names if callable_attr(mapping, n))
     for a in exist:
         return getattr(mapping, a)()
-    raise TypeError("Object {} has no compatible items interface.".format(mapping))
+    raise TypeError(
+        "Object {} has no compatible items interface.".format(mapping))
