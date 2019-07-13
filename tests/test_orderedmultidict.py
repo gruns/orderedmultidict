@@ -870,11 +870,11 @@ class TestBinaryOperators(unittest.TestCase):
 
     def test_ior(self):
         for s, t, d, o in self._or_params:
-            # test with dict
+            # Test with dict.
             a = omdict(s)
             a |= dict(t)
             assert a == omdict(d)
-            # test with omdict
+            # Test with omdict.
             a = omdict(s)
             a |= omdict(t)
             assert a == omdict(o)
