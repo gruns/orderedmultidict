@@ -13,7 +13,7 @@
 import sys
 from os.path import dirname, join as pjoin
 
-if sys.version_info > (2, 6):
+if sys.version_info >= (2, 7):
     from typing import Dict
 
 from .orderedmultidict import *  # noqa

@@ -20,7 +20,7 @@ from six.moves import map, zip_longest
 
 from .itemlist import itemlist
 
-if sys.version_info > (2, 6):
+if sys.version_info >= (2, 7):
     from typing import Iterable, Tuple, Any, List, Dict
 
 if six.PY2:
