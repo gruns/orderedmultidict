@@ -10,9 +10,11 @@
 # License: Build Amazing Things (Unlicense)
 #
 
+import sys
 from os.path import dirname, join as pjoin
 
-from typing import Dict
+if sys.version_info > (2, 6):
+    from typing import Dict
 
 from .orderedmultidict import *  # noqa
 

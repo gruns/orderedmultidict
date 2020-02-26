@@ -15,11 +15,13 @@ from __future__ import absolute_import
 import sys
 from itertools import chain
 
-from typing import Iterable, Tuple, Any, List, Dict
 import six
 from six.moves import map, zip_longest
 
 from .itemlist import itemlist
+
+if sys.version_info > (2, 6):
+    from typing import Iterable, Tuple, Any, List, Dict
 
 if six.PY2:
     from collections import MutableMapping
