@@ -15,6 +15,7 @@ from __future__ import absolute_import
 import sys
 from itertools import chain
 
+from typing import Iterable, Tuple, Any, List, Dict
 import six
 from six.moves import map, zip_longest
 
@@ -25,9 +26,11 @@ if six.PY2:
 else:
     from collections.abc import MutableMapping
 try:
-    from collections import OrderedDict as odict  # Python 2.7 and later.
+    # Python 2.7 and later.
+    from collections import OrderedDict as odict  # type: ignore
 except ImportError:
-    from ordereddict import OrderedDict as odict  # Python 2.6 and earlier.
+    # Python 2.6 and earlier.
+    from ordereddict import OrderedDict as odict  # type: ignore
 
 
 _absent = object()  # Marker that means no parameter was provided.
@@ -223,7 +226,7 @@ class omdict(MutableMapping):
         # <leftovers>. Items in <replacements> are new values to replace old
         # values for a given key, and items in <leftovers> are new items to be
         # added.
-        replacements, leftovers = dict(), []
+        replacements, leftovers = dict(), []  # type: Tuple[Dict, List]
         for mapping in chain(args, [kwargs]):
             self._bin_update_items(
                 self._items_iterator(mapping), replace_at_most_one,
@@ -626,7 +629,9 @@ class omdict(MutableMapping):
         """
         if key is not _absent:
             if key in self:
-                items = [(node.key, node.value) for node in self._map[key]]
+                items = [
+                    (node.key, node.value) for node in self._map[key]
+                ]  # type: Iterable[Tuple[Any, Any]]
                 return iter(items)
             raise KeyError(key)
         items = six.iteritems(self._map)

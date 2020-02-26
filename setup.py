@@ -74,7 +74,7 @@ omdict retains method parity with dict.
 
 Information and documentation at https://github.com/gruns/orderedmultidict.''')
 
-required = ['six>=1.8.0']
+required = ['six>=1.8.0', "typing"]
 if sys.version_info < (2, 7):
     required.append('ordereddict')
 
@@ -93,6 +93,9 @@ setup(
     long_description=long_description,
     packages=find_packages(),
     include_package_data=True,
+    package_data={
+        "orderedmultidict": ["py.typed"],
+    },
     platforms=['any'],
     classifiers=[
         'Topic :: Software Development :: Libraries',
