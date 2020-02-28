@@ -20,8 +20,8 @@ from six.moves import map, zip_longest
 
 from .itemlist import itemlist
 
-# There's no typing module in 2.x
-if sys.version_info >= (3, 4):
+# There's no typing module until 3.5
+if sys.version_info >= (3, 5):
     from typing import Iterable, Tuple, Any, List, Dict
 
 if six.PY2:
