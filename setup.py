@@ -93,6 +93,9 @@ setup(
     long_description=long_description,
     packages=find_packages(),
     include_package_data=True,
+    package_data={
+        "orderedmultidict": ["py.typed"],
+    },
     platforms=['any'],
     classifiers=[
         'Topic :: Software Development :: Libraries',
