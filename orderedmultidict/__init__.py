@@ -14,6 +14,4 @@ from .orderedmultidict import *  # noqa
 
 # Import all variables in __version__.py without explicit imports.
 from . import __version__
-globals().update(dict(
-    (k, v) for k, v in __version__.__dict__.items()
-    if k not in globals()))
+globals().update(dict((k, v) for k, v in __version__.__dict__.items()))
