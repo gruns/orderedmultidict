@@ -18,6 +18,7 @@ from itertools import product, repeat
 import six
 from six.moves import map, zip, zip_longest
 
+import orderedmultidict
 from orderedmultidict.orderedmultidict import omdict
 
 try:
@@ -120,6 +121,15 @@ class TestOmdict(unittest.TestCase):
         assert omdict(items).allitems() == items
         omd_item_set = set(omdict(sape=4139, guido=4127, jack=4098).items())
         assert omd_item_set == set(items)  # Keyword order isn't preserved.
+
+    def test_metadata(self):
+        assert orderedmultidict.__title__
+        assert orderedmultidict.__version__
+        assert orderedmultidict.__license__
+        assert orderedmultidict.__author__
+        assert orderedmultidict.__contact__
+        assert orderedmultidict.__description__
+        assert orderedmultidict.__url__
 
     def test_load(self):
         omd = omdict()
