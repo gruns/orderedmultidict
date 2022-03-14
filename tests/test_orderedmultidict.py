@@ -123,13 +123,15 @@ class TestOmdict(unittest.TestCase):
         assert omd_item_set == set(items)  # Keyword order isn't preserved.
 
     def test_metadata(self):
-        assert orderedmultidict.__title__
-        assert orderedmultidict.__version__
-        assert orderedmultidict.__license__
-        assert orderedmultidict.__author__
-        assert orderedmultidict.__contact__
-        assert orderedmultidict.__description__
-        assert orderedmultidict.__url__
+        def is_non_empty_string(s):
+            return isinstance(s, str) and s
+        assert is_non_empty_string(orderedmultidict.__title__)
+        assert is_non_empty_string(orderedmultidict.__version__)
+        assert is_non_empty_string(orderedmultidict.__license__)
+        assert is_non_empty_string(orderedmultidict.__author__)
+        assert is_non_empty_string(orderedmultidict.__contact__)
+        assert is_non_empty_string(orderedmultidict.__description__)
+        assert is_non_empty_string(orderedmultidict.__url__)
 
     def test_load(self):
         omd = omdict()
