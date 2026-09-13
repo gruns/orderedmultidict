@@ -442,10 +442,8 @@ class omdict(MutableMapping):
         """
         if key in self:
             values = self.getlist(key)
-            del self._map[key]
-            for node, nodekey, nodevalue in self._items:
-                if nodekey == key:
-                    self._items.removenode(node)
+            for node in self._map.pop(key):
+                self._items.removenode(node)
             return values
         elif key not in self._map and default is not _absent:
             return default
