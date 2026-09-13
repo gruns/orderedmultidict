@@ -399,6 +399,8 @@ class omdict(MutableMapping):
                 elif value is _absent:
                     self._map[key].remove(node)
                     self._items.removenode(node)
+            if key in self._map and not self._map[key]:
+                del self._map[key]
         return self
 
     def removevalues(self, key, values):
