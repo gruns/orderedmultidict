@@ -414,6 +414,16 @@ class TestOmdict(unittest.TestCase):
     def test_pop(self):
         self._test_pop_poplist(lambda omd, key: omd.get(key) == omd.pop(key))
 
+    def test_poplist_nonreflexive_key(self):
+        key = float('nan')
+        other = float('nan')
+        omd = omdict([(key, 1), ('keep', 2), (other, 3), (key, 4)])
+        self.assertEqual(omd.poplist(key), [1, 4])
+        self.assertNotIn(key, omd)
+        self.assertEqual(omd.size(), 2)
+        self.assertEqual(omd.allitems(), [('keep', 2), (other, 3)])
+        self.assertEqual(omd.getlist(other), [3])
+
     def test_poplist(self):
         self._test_pop_poplist(
             lambda omd, key: omd.getlist(key) == omd.poplist(key))
