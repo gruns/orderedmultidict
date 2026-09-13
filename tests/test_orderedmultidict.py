@@ -362,6 +362,17 @@ class TestOmdict(unittest.TestCase):
                 assert omd.addlist(nonkey) == omd and nonkey not in omd
                 assert omd.addlist(nonkey, []) == omd and nonkey not in omd
 
+    def test_setlist_empty_iterator(self):
+        for values in (iter(()), (value for value in ())):
+            omd = omdict([('a', 1), ('b', 2), ('a', 3)])
+            self.assertIs(omd.setlist('a', values), omd)
+            self.assertNotIn('a', omd)
+            self.assertEqual(omd.keys(), ['b'])
+            self.assertEqual(omd.allitems(), [('b', 2)])
+            self.assertEqual(len(omd), omd.size())
+            omd.add('a', 4)
+            self.assertEqual(omd['a'], 4)
+
     def test_setlist(self):
         for init in self.inits:
             omd = omdict(init)
