@@ -74,6 +74,29 @@ class TestItemList(unittest.TestCase):
             for (item1, key1, value1), (item2, key2, value2) in iterator:
                 assert item1 == item2 and key1 == key2 and value1 == value2
 
+    def test_unequal_lengths(self):
+        cases = [([], [(1, 1)]), ([(1, 1)], [(1, 1), (2, 2)]),
+                 ([], [(None, None)]),
+                 ([(None, None)], [(None, None), (None, None)])]
+        for left, right in cases:
+            first, second = itemlist(left), itemlist(right)
+            self.assertFalse(first == second)
+            self.assertFalse(second == first)
+            self.assertTrue(first != second)
+            self.assertTrue(second != first)
+            self.assertEqual(first.items(), left)
+            self.assertEqual(second.items(), right)
+
+    def test_equality_controls(self):
+        for items in ([], [(1, 1)], [(1, 1), (1, 2)], [(None, None)]):
+            self.assertTrue(itemlist(items) == itemlist(items))
+            self.assertFalse(itemlist(items) != itemlist(items))
+        self.assertFalse(itemlist([(1, 1)]) == itemlist([(1, 2)]))
+        self.assertFalse(itemlist([(1, 1)]) == itemlist([(2, 1)]))
+        first = itemlist([(1, 1), (2, 2)])
+        second = itemlist([(2, 2), (1, 1)])
+        self.assertFalse(first == second)
+
     def test_reverse(self):
         for init in self.inits:
             il = itemlist(init)

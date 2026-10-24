@@ -143,7 +143,11 @@ class itemlist(object):
         self.removenode(self[index])
 
     def __eq__(self, other):
-        for (n1, key1, value1), (n2, key2, value2) in zip_longest(self, other):
+        for item1, item2 in zip_longest(self, other):
+            if item1 is None or item2 is None:
+                return False
+            n1, key1, value1 = item1
+            n2, key2, value2 = item2
             if key1 != key2 or value1 != value2:
                 return False
         return True
