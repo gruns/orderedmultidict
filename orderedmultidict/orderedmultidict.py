@@ -826,6 +826,8 @@ class omdict(MutableMapping):
         return self.__class__(chain(_get_items(self), _get_items(other)))
 
     def __ior__(self, other):
+        if other is self:
+            other = self.copy()
         for k, v in _get_items(other):
             self.add(k, value=v)
         return self

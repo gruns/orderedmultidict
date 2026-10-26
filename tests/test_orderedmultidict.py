@@ -622,6 +622,14 @@ class TestOmdict(unittest.TestCase):
             reversed = list(init.items())[::-1]
             assert omdict(init).reverse().allitems() == reversed
 
+    def test_inplace_merge_with_self(self):
+        items = [('a', 1), ('b', 2), ('a', 3)]
+        omd = omdict(items)
+        original = omd
+        omd |= omd
+        assert omd is original
+        assert omd.allitems() == items + items
+
     def test_eq(self):
         for init in self.inits:
             d, omd = dict(init), omdict(init)
