@@ -281,7 +281,7 @@ class omdict(MutableMapping):
             return self._map[key][0].value
         return default
 
-    def getlist(self, key, default=[]):
+    def getlist(self, key, default=_absent):
         """
         Returns: The list of values for <key> if <key> is in the dictionary,
         else <default>. If <default> is not provided, an empty list is
@@ -289,6 +289,8 @@ class omdict(MutableMapping):
         """
         if key in self:
             return [node.value for node in self._map[key]]
+        if default is _absent:
+            return []
         return default
 
     def setdefault(self, key, default=None):

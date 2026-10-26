@@ -622,6 +622,20 @@ class TestOmdict(unittest.TestCase):
             reversed = list(init.items())[::-1]
             assert omdict(init).reverse().allitems() == reversed
 
+    def test_getlist_missing_default_is_not_shared(self):
+        omd = omdict()
+        missing = omd.getlist('missing')
+        missing.append('new value')
+        assert omd.getlist('missing') == []
+        assert omd.getlist('another missing key') == []
+        assert omdict().getlist('missing') == []
+        assert 'missing' not in omd
+
+    def test_getlist_preserves_explicit_default(self):
+        default = []
+        assert omdict().getlist('missing', default) is default
+        assert omdict().getlist('missing', None) is None
+
     def test_eq(self):
         for init in self.inits:
             d, omd = dict(init), omdict(init)
