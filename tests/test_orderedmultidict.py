@@ -139,6 +139,14 @@ class TestOmdict(unittest.TestCase):
             assert omd.load(init) == omd
             assert omd.allitems() == list(init.items())
 
+    def test_load_from_self(self):
+        items = [('a', 1), ('b', 2), ('a', 3)]
+        for as_iterator in (False, True):
+            omd = omdict(items)
+            source = omd.iterallitems() if as_iterator else omd
+            assert omd.load(source, c=4) is omd
+            assert omd.allitems() == items + [('c', 4)]
+
     def test_copy(self):
         for init in self.inits:
             omd = omdict(init)
