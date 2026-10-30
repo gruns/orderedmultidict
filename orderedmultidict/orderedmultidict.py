@@ -176,6 +176,7 @@ class omdict(MutableMapping):
 
         Returns: <self>.
         """
+        args = tuple(list(self._items_iterator(mapping)) for mapping in args)
         self.clear()
         self.updateall(*args, **kwargs)
         return self
