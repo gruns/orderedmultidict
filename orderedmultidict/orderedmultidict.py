@@ -598,8 +598,10 @@ class omdict(MutableMapping):
           is a dictionary key, only values of items with key <key> are
           returned.
         """
-        if key is not _absent and key in self._map:
-            return self.getlist(key)
+        if key is not _absent:
+            if key in self._map:
+                return self.getlist(key)
+            raise KeyError(key)
         return list(self.itervalues())
 
     def lists(self):

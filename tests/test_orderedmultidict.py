@@ -535,6 +535,21 @@ class TestOmdict(unittest.TestCase):
     # Tests every non-'all' items, keys, values, lists method: items(), keys(),
     # values(), lists(), listitems() and their iterators iteritems(),
     # iterkeys(), itervalues(), iterlists(), and iterlistitems().
+    def test_values_missing_key(self):
+        omd = omdict([
+            ('present', 'first'), ('present', 'second'),
+            (None, 'none'), (False, 'false'),
+        ])
+        assert omd.values() == ['first', 'none', 'false']
+        assert omd.values('present') == ['first', 'second']
+        assert omd.values(None) == ['none']
+        assert omd.values(False) == ['false']
+        self.assertRaises(KeyError, omd.values, 'missing')
+
+        empty = omdict()
+        assert empty.values() == []
+        self.assertRaises(KeyError, empty.values, 'missing')
+
     def test_nonall_item_key_value_lists(self):
         for init in self.inits:
             dic = odict(init.items())
